@@ -1,8 +1,6 @@
 package com.example.AppIndustry.data;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.util.Log;
+
 
 import com.example.AppIndustry.presentation.MainActivity;
 import com.example.AppIndustry.utils.ServerProperties;
