@@ -1,4 +1,4 @@
-package com.example.appindustry;
+package com.example.AppIndustry;
 
 import org.junit.Test;
 
