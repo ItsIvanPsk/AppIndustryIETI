@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AppIndustry</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="ieti_industry">IETI Industry</string>
+    <string name="sign_in">Sign In</string>
 </resources>
