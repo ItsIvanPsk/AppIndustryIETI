@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.appindustry.R;
+import com.example.AppIndustry.R;
 
 public class MainDashboard extends AppCompatActivity {
     @Override
