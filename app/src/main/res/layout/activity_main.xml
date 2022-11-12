@@ -17,55 +17,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/main_input_username"
-        android:layout_width="276dp"
-        android:layout_height="49dp"
-        android:hint="@string/username"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:background="@drawable/custom_input"
-        android:drawableStart="@drawable/custom_user_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/main_layout_inputs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        android:drawablePadding="8dp"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_txt_header"
-        app:layout_constraintVertical_bias="0.216"
-        android:drawableLeft="@drawable/custom_user_icon" />
-
-    <EditText
-        android:id="@+id/main_input_password"
-        android:layout_width="276dp"
-        android:layout_height="49dp"
-        android:hint="@string/password"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:background="@drawable/custom_input"
-        android:drawableStart="@drawable/custom_password_icon"
-        android:inputType="textPassword"
-        android:drawablePadding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_input_username"
-        app:layout_constraintVertical_bias="0.21"
-        android:drawableLeft="@drawable/custom_password_icon" />
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/main_input_username"
+            android:layout_width="276dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_user_icon"
+            android:drawableLeft="@drawable/custom_user_icon"
+            android:drawablePadding="8dp"
+
+            android:hint="@string/username"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <EditText
+            android:id="@+id/main_input_password"
+            android:layout_width="276dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_password_icon"
+            android:drawableLeft="@drawable/custom_password_icon"
+            android:drawablePadding="8dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <Button
         android:id="@+id/main_btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="304dp"
-        android:layout_marginLeft="304dp"
         android:text="@string/log_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_input_password"
-        app:layout_constraintVertical_bias="0.271" />
+        app:layout_constraintTop_toBottomOf="@+id/main_layout_inputs"
+        app:layout_constraintVertical_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

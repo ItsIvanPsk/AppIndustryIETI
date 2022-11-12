@@ -2,24 +2,35 @@ package com.example.AppIndustry.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.AppIndustry.R;
 import com.example.AppIndustry.data.WebSockets;
+import com.example.AppIndustry.presentation.dialog.UserNotFoundDialog;
+import com.example.AppIndustry.utils.ServerProperties;
+import com.example.AppIndustry.utils.UserUtilities;
 
-import java.sql.Time;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ServerProperties {
 
     WebSockets client;
     EditText usernameInput, passwordInput;
     Button button;
+    ProgressDialog progressDoalog;
     static boolean validated = false;
 
     @Override
@@ -47,15 +58,22 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                client.envia(
-                        usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
-                );
-
-                if (validated){
-                    String username = usernameInput.getText().toString();
-                    Intent intent = new Intent(MainActivity.this,MainDashboard.class);
-                    intent.putExtra(username, username);
-                    startActivity(intent);
+                try{
+                    client.envia(
+                            usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
+                    );
+                    Thread.sleep(SERVER_QUERY_DELAY);
+                    if (validated){
+                        String username = usernameInput.getText().toString();
+                        Intent intent = new Intent(MainActivity.this,MainDashboard.class);
+                        intent.putExtra(username, username);
+                        startActivity(intent);
+                    } else {
+                        Log.i("SERVER_RESPONSE", "Incorrect Username or Username don't found");
+                        UserNotFoundDialog.userNotFound(MainActivity.this).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
@@ -64,7 +82,5 @@ public class MainActivity extends AppCompatActivity {
     public static void setValidated(boolean val){
         validated = val;
     }
-
-
 
 }

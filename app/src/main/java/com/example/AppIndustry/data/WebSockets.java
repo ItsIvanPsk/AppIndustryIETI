@@ -35,8 +35,15 @@ public class WebSockets implements ServerProperties {
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
                     System.out.println(token);
-                    if (token.equals("UV")){
-                        userValidation(message);
+
+                    /*
+                        UV -> User validation
+                     */
+
+                    switch (token) {
+                        case "UV":
+                            userValidation(message);
+                            break;
                     }
                 }
 
