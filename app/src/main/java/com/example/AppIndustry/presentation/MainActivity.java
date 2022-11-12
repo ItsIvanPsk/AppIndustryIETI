@@ -12,6 +12,8 @@ import android.widget.EditText;
 import com.example.AppIndustry.R;
 import com.example.AppIndustry.data.WebSockets;
 
+import java.sql.Time;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 client.envia(
                         usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                 );
+
                 if (validated){
                     String username = usernameInput.getText().toString();
                     Intent intent = new Intent(MainActivity.this,MainDashboard.class);
