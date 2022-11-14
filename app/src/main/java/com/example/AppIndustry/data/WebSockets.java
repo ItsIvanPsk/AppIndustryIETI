@@ -3,6 +3,8 @@ package com.example.AppIndustry.data;
 
 
 import com.example.AppIndustry.presentation.MainActivity;
+import com.example.AppIndustry.presentation.MainDashboard;
+import com.example.AppIndustry.presentation.dialog.ServerDisconectedDialog;
 import com.example.AppIndustry.utils.components.CustomSensor;
 import com.example.AppIndustry.utils.components.CustomSlider;
 import com.example.AppIndustry.utils.components.CustomSwitch;
@@ -24,9 +26,7 @@ public class WebSockets implements ServerProperties {
 
     public void envia(String message) {
         try {
-            System.out.println("msg->" + message);
             client.send(message);
-            System.out.println("post");
         } catch (WebsocketNotConnectedException e) {
             System.out.println("Connexió perduda ...");
         }
@@ -38,9 +38,8 @@ public class WebSockets implements ServerProperties {
             client = new WebSocketClient(new URI(SERVER_URIs), (Draft) new Draft_6455()) {
                 @Override
                 public void onMessage(String message) {
-                    String token = message.substring(0,3);
+                    String token = message.substring(0,2);
                     System.out.println(token);
-                    System.out.println("MSG->" + message);
 
                     /*
                         UV# -> User validation
@@ -51,10 +50,11 @@ public class WebSockets implements ServerProperties {
                             SL -> Slider
                      */
                     switch (token) {
-                        case "UV#":
+                        case "UV":
                             userValidation(message);
                             break;
-                        case "CF#":
+                        case "CF":
+                            System.out.println("HERE!");
                             configParser(message);
                             break;
                     }
@@ -68,6 +68,7 @@ public class WebSockets implements ServerProperties {
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
                     System.out.println("Disconnected from: " + getURI());
+                    MainDashboard.setStateConnected(false);
                 }
 
                 @Override
@@ -84,13 +85,14 @@ public class WebSockets implements ServerProperties {
         ArrayList<CustomSwitch> switches = new ArrayList<CustomSwitch>();
         ArrayList<CustomSensor> sensors = new ArrayList<CustomSensor>();
         ArrayList<CustomSlider> sliders = new ArrayList<CustomSlider>();
-        // message = "CF%%SW#0#LabelDefault#Label1%%SW#1#LabelDefault#Label2%%SS#2#ºC#5#10#Label";
         System.out.println(message);
-        message = message.substring(4, message.length());
         String[] cfg = message.split("%%");
+        System.out.println(cfg[1].toString());
         for (int i = 1; i < cfg.length; i++){
             String[] sw = message.split("#");
-            if (sw[0].equals("SW")){
+            String type = cfg[i].substring(0,2);
+            if(type.equals("SW")){
+                System.out.println("SW!");
                 switches.add(
                         new CustomSwitch(
                                 Integer.parseInt(sw[1]),
@@ -98,7 +100,9 @@ public class WebSockets implements ServerProperties {
                                 sw[3].substring(0, sw[3].length() - 4).toString()
                         )
                 );
-            } else if (sw[0].equals("SS")){
+                System.out.println(switches.toString());
+            } else if (type.equals("SS")){
+                System.out.println("SS!");
                 sensors.add(
                         new CustomSensor(
                                 Integer.parseInt(sw[1]),
@@ -108,7 +112,31 @@ public class WebSockets implements ServerProperties {
                                 sw[5]
                         )
                 );
-            } else if (sw[0].equals("SL")){
+                System.out.println(switches.toString());
+            }
+        }
+        /*
+        for (int i = 1; i < cfg.length; i++){
+            String[] sw = message.split("#");
+            if (sw[i].equals("SW")){
+                switches.add(
+                        new CustomSwitch(
+                                Integer.parseInt(sw[1]),
+                                sw[2].toString(),
+                                sw[3].substring(0, sw[3].length() - 4).toString()
+                        )
+                );
+            } else if (sw[i].equals("SS")){
+                sensors.add(
+                        new CustomSensor(
+                                Integer.parseInt(sw[1]),
+                                sw[2].toString(),
+                                sw[3],
+                                sw[4],
+                                sw[5]
+                        )
+                );
+            } else if (sw[i].equals("SL")){
                 sliders.add(
                         new CustomSlider(
                                 Integer.parseInt(sw[1]),
@@ -121,6 +149,8 @@ public class WebSockets implements ServerProperties {
                 );
             }
         }
+         */
+
         for (int i = 0; i < sensors.size(); i++){
             System.out.println(sensors.get(i).toString());
         }
@@ -130,6 +160,8 @@ public class WebSockets implements ServerProperties {
         for (int i = 0; i < switches.size(); i++){
             System.out.println(switches.get(i).toString());
         }
+
+        MainDashboard.setArrays(switches,sensors,sliders);
     }
 
 

@@ -10,12 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb10810c-c7c1-4d12-8374-fddf0457a25b" name="Changes" comment="//WIP">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/ConnectionUseCase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/ServerProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/ServerProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/main_dashboard.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/main_dashboard.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +113,7 @@
       <recent name="C:\Users\ivanf\Documents\AndroidWebSockets-main\Android\app\src\main\java\com\example\AppIndustry" />
     </key>
   </component>
-  <component name="RunManager" selected="Android App.MainDashboard">
+  <component name="RunManager" selected="Android App.app">
     <configuration name="MainActivity" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false" temporary="true">
       <module name="empty1.app.main" />
       <option name="DEPLOY" value="true" />

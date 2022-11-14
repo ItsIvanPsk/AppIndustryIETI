@@ -17,12 +17,12 @@ public class CustomSlider {
     @Override
     public String toString() {
         return "CustomSlider{" +
-                "id=" + id +
-                ", min=" + min +
-                ", max=" + max +
-                ", def=" + def +
-                ", step=" + step +
-                ", label='" + label + '\'' +
+                "id=" + getId() +
+                ", min=" + getMin() +
+                ", max=" + getMax() +
+                ", def=" + getDef() +
+                ", step=" + getStep() +
+                ", label='" + getLabel() + '\'' +
                 '}';
     }
 

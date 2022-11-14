@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
                 try{
                     view.setEnabled(false);
                     ConnectionUseCase.client.envia(
-                            "UV#Ivan#ivan1234"
-                            //"UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
+                            "UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                     );
                     Thread.sleep(SERVER_QUERY_DELAY);
                     if (validated){
