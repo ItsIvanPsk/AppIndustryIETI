@@ -17,12 +17,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.AppIndustry.R;
-import com.example.AppIndustry.data.WebSockets;
+import com.example.AppIndustry.data.*;
 import com.example.AppIndustry.presentation.dialog.UserNotFoundDialog;
 import com.example.AppIndustry.utils.ServerProperties;
-import com.example.AppIndustry.utils.UserUtilities;
 
 
 public class MainActivity extends AppCompatActivity implements ServerProperties {
@@ -30,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
     WebSockets client;
     EditText usernameInput, passwordInput;
     Button button;
-    ProgressDialog progressDoalog;
     static boolean validated = false;
 
     @Override
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
             public void onClick(View view) {
                 try{
                     client.envia(
-                            usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
+                            "UV#    " + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                     );
                     Thread.sleep(SERVER_QUERY_DELAY);
                     if (validated){
