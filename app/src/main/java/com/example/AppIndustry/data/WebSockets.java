@@ -22,12 +22,13 @@ public class WebSockets implements ServerProperties {
 
     WebSocketClient client;
 
-    public void envia(String user) {
+    public void envia(String message) {
         try {
-            client.send(user);
+            System.out.println("msg->" + message);
+            client.send(message);
+            System.out.println("post");
         } catch (WebsocketNotConnectedException e) {
             System.out.println("Connexió perduda ...");
-            connecta();
         }
 
     }
@@ -37,22 +38,23 @@ public class WebSockets implements ServerProperties {
             client = new WebSocketClient(new URI(SERVER_URIs), (Draft) new Draft_6455()) {
                 @Override
                 public void onMessage(String message) {
-                    String token = message.substring(0,2);
+                    String token = message.substring(0,3);
                     System.out.println(token);
+                    System.out.println("MSG->" + message);
 
                     /*
-                        UV -> User validation
-                        CF -> DashboardConfig
+                        UV# -> User validation
+                        CF# -> DashboardConfig
                             DD -> Dropdown
                             SW -> Switch
                             SS -> Sensor
                             SL -> Slider
                      */
                     switch (token) {
-                        case "UV":
+                        case "UV#":
                             userValidation(message);
                             break;
-                        case "CF":
+                        case "CF#":
                             configParser(message);
                             break;
                     }

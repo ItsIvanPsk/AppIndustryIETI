@@ -10,18 +10,19 @@ import android.widget.TableRow;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.AppIndustry.R;
+import com.example.AppIndustry.data.WebSockets;
+import com.example.AppIndustry.utils.ServerProperties;
 import com.example.AppIndustry.utils.components.CustomSensor;
 import com.example.AppIndustry.utils.components.CustomSlider;
 import com.example.AppIndustry.utils.components.CustomSwitch;
 
 import java.util.ArrayList;
 
-public class MainDashboard extends AppCompatActivity {
+public class MainDashboard extends AppCompatActivity implements ServerProperties {
 
     static ArrayList<CustomSwitch> switches;
     static ArrayList<CustomSensor> sensors;
     static ArrayList<CustomSlider> sliders;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,11 @@ public class MainDashboard extends AppCompatActivity {
         switches = new ArrayList<CustomSwitch>();
         sensors = new ArrayList<CustomSensor>();
         sliders = new ArrayList<CustomSlider>();
+
+        ConnectionUseCase.client.envia(
+                "CF#"
+        );
+
     }
 
     public static void setArrays(
@@ -50,7 +56,5 @@ public class MainDashboard extends AppCompatActivity {
     private void updateSensors(){
 
     }
-    private void updateSwitches(){
 
-    }
 }

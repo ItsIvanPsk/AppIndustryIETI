@@ -25,7 +25,6 @@ import com.example.AppIndustry.utils.ServerProperties;
 
 public class MainActivity extends AppCompatActivity implements ServerProperties {
 
-    WebSockets client;
     EditText usernameInput, passwordInput;
     Button button;
     static boolean validated = false;
@@ -45,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
         usernameInput = findViewById(R.id.main_input_username);
         passwordInput = findViewById(R.id.main_input_password);
 
-        client = new WebSockets();
-        client.connecta();
+        ConnectionUseCase.client = new WebSockets();
+        ConnectionUseCase.client.connecta();
 
         setButtonListeners();
     }
@@ -56,8 +55,10 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
             @Override
             public void onClick(View view) {
                 try{
-                    client.envia(
-                            "UV#    " + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
+                    view.setEnabled(false);
+                    ConnectionUseCase.client.envia(
+                            "UV#Ivan#ivan1234"
+                            //"UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                     );
                     Thread.sleep(SERVER_QUERY_DELAY);
                     if (validated){
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                view.setEnabled(true);
             }
         });
     }
