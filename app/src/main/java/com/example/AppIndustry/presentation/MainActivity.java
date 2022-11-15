@@ -23,9 +23,9 @@ import com.example.AppIndustry.presentation.dialog.UserNotFoundDialog;
 import com.example.AppIndustry.utils.ServerProperties;
 
 
-public class MainActivity extends AppCompatActivity implements ServerProperties {
+public class MainActivity extends AppCompatActivity {
 
-    EditText usernameInput, passwordInput;
+    EditText usernameInput, passwordInput, serverInput;
     Button button;
     static boolean validated = false;
 
@@ -41,11 +41,12 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
         setContentView(R.layout.activity_main);
 
         button = findViewById(R.id.main_btn_login);
+        serverInput = findViewById(R.id.main_input_server);
         usernameInput = findViewById(R.id.main_input_username);
         passwordInput = findViewById(R.id.main_input_password);
 
         ConnectionUseCase.client = new WebSockets();
-        ConnectionUseCase.client.connecta();
+        ConnectionUseCase.client.connecta(serverInput.getText().toString());
 
         setButtonListeners();
     }
@@ -54,25 +55,31 @@ public class MainActivity extends AppCompatActivity implements ServerProperties 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    view.setEnabled(false);
-                    ConnectionUseCase.client.envia(
-                            "UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
-                    );
-                    Thread.sleep(SERVER_QUERY_DELAY);
-                    if (validated){
-                        String username = usernameInput.getText().toString();
-                        Intent intent = new Intent(MainActivity.this,MainDashboard.class);
-                        intent.putExtra(username, username);
-                        startActivity(intent);
-                    } else {
-                        Log.i("SERVER_RESPONSE", "Incorrect Username or Username don't found");
-                        UserNotFoundDialog.userNotFound(MainActivity.this).show();
+                if( !usernameInput.getText().equals("")
+                    && !passwordInput.getText().equals("")
+                        && !serverInput.getText().equals("")
+                ) {
+                    try{
+                        view.setEnabled(false);
+                        ConnectionUseCase.client.envia(
+                                "UV#Ivan#ivan1234"
+                                //"UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
+                        );
+                        Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
+                        if (validated){
+                            String username = usernameInput.getText().toString();
+                            Intent intent = new Intent(MainActivity.this,MainDashboard.class);
+                            intent.putExtra(username, username);
+                            startActivity(intent);
+                        } else {
+                            Log.i("SERVER_RESPONSE", "Incorrect Username or Username don't found");
+                            UserNotFoundDialog.userNotFound(MainActivity.this).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
+                    view.setEnabled(true);
                 }
-                view.setEnabled(true);
             }
         });
     }

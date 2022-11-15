@@ -1,11 +1,11 @@
 package com.example.AppIndustry.utils.components;
 
 public class CustomSlider {
-    private int id, min, max;
-    private float def, step;
+    private int id, min, max, step;
+    private float def;
     private String label;
 
-    public CustomSlider(int id, float def, int min, int max, float step, String label) {
+    public CustomSlider(int id, float def, int min, int max, int step, String label) {
         this.id = id;
         this.def = def;
         this.min = min;
@@ -58,11 +58,11 @@ public class CustomSlider {
         this.def = def;
     }
 
-    public float getStep() {
+    public int getStep() {
         return step;
     }
 
-    public void setStep(float step) {
+    public void setStep(int step) {
         this.step = step;
     }
 

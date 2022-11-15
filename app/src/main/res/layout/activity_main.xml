@@ -29,6 +29,21 @@
         android:gravity="center">
 
         <EditText
+            android:id="@+id/main_input_server"
+            android:layout_width="276dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_server_icon"
+            android:drawableLeft="@drawable/custom_server_icon"
+            android:drawablePadding="8dp"
+
+            android:hint="Default: 10.0.2.2"
+            android:textStyle="italic"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <EditText
             android:id="@+id/main_input_username"
             android:layout_width="276dp"
             android:layout_height="49dp"

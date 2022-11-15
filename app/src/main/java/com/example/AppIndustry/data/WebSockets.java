@@ -20,7 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-public class WebSockets implements ServerProperties {
+public class WebSockets {
 
     WebSocketClient client;
 
@@ -33,9 +33,9 @@ public class WebSockets implements ServerProperties {
 
     }
 
-    public void connecta() {
+    public void connecta(String server) {
         try {
-            client = new WebSocketClient(new URI(SERVER_URIs), (Draft) new Draft_6455()) {
+            client = new WebSocketClient(new URI(ServerProperties.SERVER_URIs), (Draft) new Draft_6455()) {
                 @Override
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
@@ -54,7 +54,7 @@ public class WebSockets implements ServerProperties {
                             userValidation(message);
                             break;
                         case "CF":
-                            System.out.println("HERE!");
+                            System.out.println("onMessage: " + message);
                             configParser(message);
                             break;
                     }
@@ -77,7 +77,7 @@ public class WebSockets implements ServerProperties {
             client.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            System.out.println("Error: " + SERVER_URIs + " no és una direcció URI de WebSocket vàlida");
+            System.out.println("Error: " + ServerProperties.SERVER_URIs + " no és una direcció URI de WebSocket vàlida");
         }
     }
 
@@ -85,72 +85,45 @@ public class WebSockets implements ServerProperties {
         ArrayList<CustomSwitch> switches = new ArrayList<CustomSwitch>();
         ArrayList<CustomSensor> sensors = new ArrayList<CustomSensor>();
         ArrayList<CustomSlider> sliders = new ArrayList<CustomSlider>();
-        System.out.println(message);
-        String[] cfg = message.split("%%");
-        System.out.println(cfg[1].toString());
-        for (int i = 1; i < cfg.length; i++){
-            String[] sw = message.split("#");
-            String type = cfg[i].substring(0,2);
-            if(type.equals("SW")){
-                System.out.println("SW!");
+        System.out.println("Este es el mensaje: " + message);
+        String[] components = message.split("%%");
+        System.out.println(components.length);
+        for (int i = 0; i < components.length; i++){
+            String componentID = components[i].substring(0,2);
+            String[] attr = components[i].split("#");
+            System.out.println(componentID);
+            if(componentID.equals("SW")){
                 switches.add(
                         new CustomSwitch(
-                                Integer.parseInt(sw[1]),
-                                sw[2].toString(),
-                                sw[3].substring(0, sw[3].length() - 4).toString()
+                                Integer.parseInt(attr[1]),
+                                attr[2],
+                                attr[3]
                         )
                 );
-                System.out.println(switches.toString());
-            } else if (type.equals("SS")){
-                System.out.println("SS!");
+            } else if(componentID.equals("SL")){
+                sliders.add(
+                        new CustomSlider(
+                                Integer.parseInt(attr[1]),
+                                Float.parseFloat(attr[2]),
+                                Integer.parseInt(attr[3]),
+                                Integer.parseInt(attr[4]),
+                                Integer.parseInt(attr[5]),
+                                attr[6]
+                        )
+                );
+            } else if(componentID.equals("SS")){
                 sensors.add(
                         new CustomSensor(
-                                Integer.parseInt(sw[1]),
-                                sw[2].toString(),
-                                sw[3],
-                                sw[4],
-                                sw[5]
+                                Integer.parseInt(attr[1]),
+                                attr[2],
+                                attr[3],
+                                attr[4],
+                                attr[5]
                         )
                 );
-                System.out.println(switches.toString());
             }
         }
         /*
-        for (int i = 1; i < cfg.length; i++){
-            String[] sw = message.split("#");
-            if (sw[i].equals("SW")){
-                switches.add(
-                        new CustomSwitch(
-                                Integer.parseInt(sw[1]),
-                                sw[2].toString(),
-                                sw[3].substring(0, sw[3].length() - 4).toString()
-                        )
-                );
-            } else if (sw[i].equals("SS")){
-                sensors.add(
-                        new CustomSensor(
-                                Integer.parseInt(sw[1]),
-                                sw[2].toString(),
-                                sw[3],
-                                sw[4],
-                                sw[5]
-                        )
-                );
-            } else if (sw[i].equals("SL")){
-                sliders.add(
-                        new CustomSlider(
-                                Integer.parseInt(sw[1]),
-                                Float.parseFloat(sw[2]),
-                                Integer.parseInt(sw[3]),
-                                Integer.parseInt(sw[4]),
-                                Float.parseFloat(sw[5]),
-                                sw[6]
-                        )
-                );
-            }
-        }
-         */
-
         for (int i = 0; i < sensors.size(); i++){
             System.out.println(sensors.get(i).toString());
         }
@@ -160,10 +133,10 @@ public class WebSockets implements ServerProperties {
         for (int i = 0; i < switches.size(); i++){
             System.out.println(switches.get(i).toString());
         }
+         */
 
         MainDashboard.setArrays(switches,sensors,sliders);
     }
-
 
     public void userValidation (String message) {
         System.out.println(message);
@@ -174,4 +147,5 @@ public class WebSockets implements ServerProperties {
         if(user[3].equals("true")){ MainActivity.setValidated(true); }
         else { MainActivity.setValidated(false); }
     }
+
 }
