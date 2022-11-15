@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainDashboard extends AppCompatActivity implements ServerProperties {
+public class MainDashboard extends AppCompatActivity {
     static boolean connected = true;
     static ArrayList<CustomSwitch> switches;
     static ArrayList<CustomSensor> sensors;

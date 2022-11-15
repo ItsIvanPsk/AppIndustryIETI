@@ -20,7 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-public class WebSockets implements ServerProperties {
+public class WebSockets {
 
     WebSocketClient client;
 
@@ -33,9 +33,11 @@ public class WebSockets implements ServerProperties {
 
     }
 
-    public void connecta() {
+    public void connecta(String server) {
+        System.out.println(server);
+        String uri = "ws://" + server + ":" + ServerProperties.SERVER_PORT;
         try {
-            client = new WebSocketClient(new URI(SERVER_URIs), (Draft) new Draft_6455()) {
+            client = new WebSocketClient(new URI(uri), (Draft) new Draft_6455()) {
                 @Override
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
@@ -77,7 +79,7 @@ public class WebSockets implements ServerProperties {
             client.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            System.out.println("Error: " + SERVER_URIs + " no és una direcció URI de WebSocket vàlida");
+            System.out.println("Error: " + ServerProperties.SERVER_URIs + " no és una direcció URI de WebSocket vàlida");
         }
     }
 
