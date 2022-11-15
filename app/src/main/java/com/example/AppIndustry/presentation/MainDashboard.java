@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TableLayout;
@@ -39,25 +40,11 @@ public class MainDashboard extends AppCompatActivity {
         sensors = new ArrayList<CustomSensor>();
         sliders = new ArrayList<CustomSlider>();
 
-        /*
+
         ConnectionUseCase.client.envia(
                 "CF#"
         );
-         */
 
-        setAdapters();
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if(!connected){
-                    ServerDisconectedDialog.serverDisconected(MainDashboard.this);
-                }
-            }
-        });
     }
 
     public static void setStateConnected(boolean state){
@@ -72,12 +59,26 @@ public class MainDashboard extends AppCompatActivity {
         switches = _switches;
         sensors = _sensors;
         sliders = _sliders;
+
+        for (int i = 0; i < sensors.size(); i++){
+            System.out.println(sensors.get(i).toString());
+        }
+        for (int i = 0; i < sliders.size(); i++){
+            System.out.println(sliders.get(i).toString());
+        }
+        for (int i = 0; i < switches.size(); i++){
+            System.out.println(switches.get(i).toString());
+        }
     }
 
     private void updateSliders(){
         LinearLayout linearLayout = findViewById(R.id.dashboard_layout_spinners);
         for (int slider = 0; slider < sliders.size(); slider++){
-
+            SeekBar _slider = new SeekBar(this);
+            _slider.setTag(R.id.componentId, sliders.get(slider).getId());
+            _slider.setProgress(sliders.get(slider).getStep());
+            _slider.setMax(sliders.get(slider).getMax());
+            linearLayout.addView(_slider);
         }
     }
     private void updateSensors(){

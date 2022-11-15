@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.main_input_username);
         passwordInput = findViewById(R.id.main_input_password);
 
-
+        ConnectionUseCase.client = new WebSockets();
+        ConnectionUseCase.client.connecta(serverInput.getText().toString());
 
         setButtonListeners();
     }
@@ -59,12 +60,10 @@ public class MainActivity extends AppCompatActivity {
                         && !serverInput.getText().equals("")
                 ) {
                     try{
-                        ConnectionUseCase.client = new WebSockets();
-                        ConnectionUseCase.client.connecta(serverInput.getText().toString());
-
                         view.setEnabled(false);
                         ConnectionUseCase.client.envia(
-                                "UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
+                                "UV#Ivan#ivan1234"
+                                //"UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                         );
                         Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
                         if (validated){

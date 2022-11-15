@@ -4,4 +4,7 @@
     <string name="password">Password</string>
     <string name="log_in">Log In</string>
     <string name="dashboard">Dashboard</string>
+
+    <item name="componentId" type="id" />
+
 </resources>
