@@ -33,11 +33,11 @@
             android:layout_width="276dp"
             android:layout_height="49dp"
             android:layout_marginTop="20dp"
+            android:text="10.0.2.2"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_server_icon"
             android:drawableLeft="@drawable/custom_server_icon"
             android:drawablePadding="8dp"
-
             android:hint="Default: 10.0.2.2"
             android:textStyle="italic"
             android:paddingStart="12dp"
@@ -52,7 +52,7 @@
             android:drawableStart="@drawable/custom_user_icon"
             android:drawableLeft="@drawable/custom_user_icon"
             android:drawablePadding="8dp"
-
+            android:text="Ivan"
             android:hint="@string/username"
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
@@ -61,6 +61,7 @@
             android:id="@+id/main_input_password"
             android:layout_width="276dp"
             android:layout_height="49dp"
+            android:text="ivan1234"
             android:layout_marginTop="20dp"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_password_icon"

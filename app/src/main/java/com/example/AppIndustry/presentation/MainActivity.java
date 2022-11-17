@@ -22,13 +22,22 @@ import com.example.AppIndustry.data.*;
 import com.example.AppIndustry.presentation.dialog.UserNotFoundDialog;
 import com.example.AppIndustry.utils.ServerProperties;
 
+import org.java_websocket.client.WebSocketClient;
+
+import java.lang.ref.WeakReference;
+
 
 public class MainActivity extends AppCompatActivity {
 
     EditText usernameInput, passwordInput, serverInput;
     Button button;
     static boolean validated = false;
+    static String uv = "";
 
+    private static WeakReference<Activity> mActivityRef;
+    public static void updateActivity(Activity activity) {
+        mActivityRef = new WeakReference<Activity>(activity);
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -37,16 +46,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
+        ConnectionUseCase.client = null;
         button = findViewById(R.id.main_btn_login);
         serverInput = findViewById(R.id.main_input_server);
         usernameInput = findViewById(R.id.main_input_username);
         passwordInput = findViewById(R.id.main_input_password);
-
-        ConnectionUseCase.client = new WebSockets();
-        ConnectionUseCase.client.connecta(serverInput.getText().toString());
 
         setButtonListeners();
     }
@@ -60,28 +65,31 @@ public class MainActivity extends AppCompatActivity {
                         && !serverInput.getText().equals("")
                 ) {
                     try{
-                        view.setEnabled(false);
+                        ConnectionUseCase.client = new WebSockets();
+                        System.out.println(serverInput.getText().toString());
+                        ConnectionUseCase.client.connecta("10.0.2.2");
                         ConnectionUseCase.client.envia(
-                                "UV#Ivan#ivan1234"
-                                //"UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
+                                "UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                         );
-                        Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
-                        if (validated){
-                            String username = usernameInput.getText().toString();
-                            Intent intent = new Intent(MainActivity.this,MainDashboard.class);
-                            intent.putExtra(username, username);
-                            startActivity(intent);
-                        } else {
-                            Log.i("SERVER_RESPONSE", "Incorrect Username or Username don't found");
-                            UserNotFoundDialog.userNotFound(MainActivity.this).show();
-                        }
                     }catch (Exception e){
-                        e.printStackTrace();
+                        ConnectionUseCase.client = null;
                     }
-                    view.setEnabled(true);
                 }
             }
         });
+    }
+
+    public void navigate(){
+        if (validated){
+            String username = usernameInput.getText().toString();
+            Intent intent = new Intent(MainActivity.this,MainDashboard.class);
+            MainDashboard.clearArrs();
+            intent.putExtra(username, username);
+            startActivity(intent);
+        } else {
+            Log.i("SERVER_RESPONSE", "Incorrect Username or Username don't found");
+            UserNotFoundDialog.userNotFound(MainActivity.this).show();
+        }
     }
 
     public static void setValidated(boolean val){

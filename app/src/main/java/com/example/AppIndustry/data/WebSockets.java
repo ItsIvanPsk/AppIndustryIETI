@@ -1,10 +1,9 @@
 package com.example.AppIndustry.data;
 
-
-
 import com.example.AppIndustry.presentation.MainActivity;
 import com.example.AppIndustry.presentation.MainDashboard;
-import com.example.AppIndustry.presentation.dialog.ServerDisconectedDialog;
+import com.example.AppIndustry.utils.components.CustomDropdown;
+import com.example.AppIndustry.utils.components.CustomOption;
 import com.example.AppIndustry.utils.components.CustomSensor;
 import com.example.AppIndustry.utils.components.CustomSlider;
 import com.example.AppIndustry.utils.components.CustomSwitch;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 
 public class WebSockets {
 
-    WebSocketClient client;
+    public static WebSocketClient client;
 
     public void envia(String message) {
         try {
@@ -35,7 +34,7 @@ public class WebSockets {
 
     public void connecta(String server) {
         try {
-            client = new WebSocketClient(new URI(ServerProperties.SERVER_URIs), (Draft) new Draft_6455()) {
+            client = new WebSocketClient(new URI("ws://" + server + ":" + "8888"), (Draft) new Draft_6455()) {
                 @Override
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
@@ -63,6 +62,7 @@ public class WebSockets {
                 @Override
                 public void onOpen(ServerHandshake handshake) {
                     System.out.println("Connected to: " + getURI());
+                    client.send("Hola");
                 }
 
                 @Override
@@ -85,6 +85,7 @@ public class WebSockets {
         ArrayList<CustomSwitch> switches = new ArrayList<CustomSwitch>();
         ArrayList<CustomSensor> sensors = new ArrayList<CustomSensor>();
         ArrayList<CustomSlider> sliders = new ArrayList<CustomSlider>();
+        ArrayList<CustomDropdown> dropdowns = new ArrayList<CustomDropdown>();
         System.out.println("Este es el mensaje: " + message);
         String[] components = message.split("%%");
         System.out.println(components.length);
@@ -104,7 +105,7 @@ public class WebSockets {
                 sliders.add(
                         new CustomSlider(
                                 Integer.parseInt(attr[1]),
-                                Float.parseFloat(attr[2]),
+                                Integer.parseInt(attr[2]),
                                 Integer.parseInt(attr[3]),
                                 Integer.parseInt(attr[4]),
                                 Integer.parseInt(attr[5]),
@@ -121,19 +122,30 @@ public class WebSockets {
                                 attr[5]
                         )
                 );
+            } else if(componentID.equals("DD")){
+                ArrayList<CustomOption> opts = new ArrayList<>();
+                System.out.println("AQUI IVAN: " + attr[3]);
+                String[] aux_opt = attr[3].split(",");
+                for(int k = 0; k < aux_opt.length; k++){
+                    String[] optionsValues = aux_opt[k].split("//");
+                    /*
+                    opts.add(
+                            new CustomOption(
+                                Integer.parseInt(optionsValues[0]), optionsValues[1]
+                            )
+                    );
+                     */
+                }
+
+                dropdowns.add(
+                        new CustomDropdown(
+                                Integer.parseInt(attr[1]),
+                                Integer.parseInt(attr[2]),
+                                opts
+                        )
+                );
             }
         }
-        /*
-        for (int i = 0; i < sensors.size(); i++){
-            System.out.println(sensors.get(i).toString());
-        }
-        for (int i = 0; i < sliders.size(); i++){
-            System.out.println(sliders.get(i).toString());
-        }
-        for (int i = 0; i < switches.size(); i++){
-            System.out.println(switches.get(i).toString());
-        }
-         */
 
         MainDashboard.setArrays(switches,sensors,sliders);
     }
@@ -141,9 +153,6 @@ public class WebSockets {
     public void userValidation (String message) {
         System.out.println(message);
         String[] user = message.split("#");
-        for (int i = 0; i < user.length; i++){
-            System.out.println("USER - " + user[i]);
-        }
         if(user[3].equals("true")){ MainActivity.setValidated(true); }
         else { MainActivity.setValidated(false); }
     }

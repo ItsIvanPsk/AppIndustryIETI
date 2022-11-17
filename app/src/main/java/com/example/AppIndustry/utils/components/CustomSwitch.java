@@ -2,11 +2,15 @@ package com.example.AppIndustry.utils.components;
 
 public class CustomSwitch {
     private int id;
-    private String deault, label;
+    private String def, label;
 
-    public CustomSwitch(int id, String deault, String label) {
+    public CustomSwitch(int id, String def, String label) {
         this.id = id;
-        this.deault = deault;
+        if (def.equals("on")){
+            this.def = "true";
+        } else{
+            this.def = "false";
+        }
         this.label = label;
     }
 
@@ -18,12 +22,12 @@ public class CustomSwitch {
         this.id = id;
     }
 
-    public String getDeault() {
-        return deault;
+    public String getDef() {
+        return def;
     }
 
-    public void setDeault(String deault) {
-        this.deault = deault;
+    public void setDef(String deault) {
+        this.def = deault;
     }
 
     public String getLabel() {
@@ -38,7 +42,7 @@ public class CustomSwitch {
     public String toString() {
         return "CustomSwitch{" +
                 "id=" + id +
-                ", deault='" + deault + '\'' +
+                ", def='" + def + '\'' +
                 ", label='" + label + '\'' +
                 '}';
     }
