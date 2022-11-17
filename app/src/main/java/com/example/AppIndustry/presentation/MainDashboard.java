@@ -1,5 +1,6 @@
 package com.example.AppIndustry.presentation;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,12 +13,16 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.AppIndustry.R;
+import com.example.AppIndustry.data.WebSockets;
+import com.example.AppIndustry.presentation.dialog.ServerDisconectedDialog;
 import com.example.AppIndustry.utils.ServerProperties;
 import com.example.AppIndustry.utils.components.CustomSensor;
 import com.example.AppIndustry.utils.components.CustomSlider;
 import com.example.AppIndustry.utils.components.CustomSwitch;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainDashboard extends AppCompatActivity {
     static boolean connected = true;
@@ -26,6 +31,12 @@ public class MainDashboard extends AppCompatActivity {
     static ArrayList<CustomSlider> sliders;
     static ArrayList<CustomSlider> dropdowns;
     Button loginBtn;
+    WebSockets ws;
+    boolean running = false;
+
+    public boolean getRunning(){
+        return this.running;
+    }
 
     public static void clearArrs() {
         switches = new ArrayList<>();
@@ -34,6 +45,7 @@ public class MainDashboard extends AppCompatActivity {
         dropdowns = new ArrayList<>();
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,29 +54,42 @@ public class MainDashboard extends AppCompatActivity {
         sensors = new ArrayList<>();
         sliders = new ArrayList<>();
 
-        ConnectionUseCase.client.envia(
-                "CF#"
-        );
-        try{
-            Thread.sleep(ServerProperties.SERVER_QUERY_DELAY * 2);
-        } catch (Exception e){
+        WebSockets.updateDashActivity(this);
 
+        loginBtn = findViewById(R.id.dashboard_login_button);
+
+        try{
+            ws = new WebSockets();
+            ws.connecta();
+            System.out.println("MainDashboard: Conectado");
+            Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
+            ws.envia(
+                    "CF#"
+            );
+            Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
+        }catch (Exception e){
+            System.out.println("Exception");
         }
+
         updateSliders();
         updateSwithces();
         updateDropdowns();
         setupListeners();
+        MainActivity ma = new MainActivity();
+        ma.setRunning(false);
+        running = true;
     }
 
     private void setupListeners() {
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                ConnectionUseCase.client = null;
                 startActivity(intent);
             }
         });
+
     }
 
     public static void setStateConnected(boolean state){
@@ -98,6 +123,7 @@ public class MainDashboard extends AppCompatActivity {
             _slider.setTag(R.id.componentId, sliders.get(slider).getId());
             _slider.setMax(sliders.get(slider).getMax());
             _slider.setProgress(sliders.get(slider).getDef());
+            _slider.setPadding(0,10,0,10);
             linearLayout.addView(_slider);
         }
     }
@@ -106,6 +132,7 @@ public class MainDashboard extends AppCompatActivity {
         for (int switchIt = 0; switchIt < switches.size(); switchIt++){
             Switch _switch = new Switch(this);
             _switch.setChecked(Boolean.parseBoolean(switches.get(switchIt).getDef()));
+            _switch.setPadding(0,10,0,10);
             linearLayout.addView(_switch);
         }
     }
@@ -114,8 +141,14 @@ public class MainDashboard extends AppCompatActivity {
         for (int dropdown = 0; dropdown < sliders.size(); dropdown++){
             Spinner _spinner = new Spinner(this);
             _spinner.setEnabled(true);
+            _spinner.setPadding(0,10,0,10);
             linearLayout.addView(_spinner);
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        running = false;
+    }
 }

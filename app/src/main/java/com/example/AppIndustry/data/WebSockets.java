@@ -1,7 +1,11 @@
 package com.example.AppIndustry.data;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import com.example.AppIndustry.presentation.MainActivity;
 import com.example.AppIndustry.presentation.MainDashboard;
+import com.example.AppIndustry.presentation.dialog.ServerDisconectedDialog;
 import com.example.AppIndustry.utils.components.CustomDropdown;
 import com.example.AppIndustry.utils.components.CustomOption;
 import com.example.AppIndustry.utils.components.CustomSensor;
@@ -15,26 +19,39 @@ import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class WebSockets {
 
-    public static WebSocketClient client;
+    WebSocketClient client;
+    boolean state;
+
+    private static WeakReference<Activity> mainActivityRef;
+    private static WeakReference<Activity> dashActivityRef;
+    public static void updateMainActivity(Activity activity) {
+        mainActivityRef = new WeakReference<Activity>(activity);
+    }
+    public static void updateDashActivity(Activity activity) {
+        dashActivityRef = new WeakReference<Activity>(activity);
+    }
 
     public void envia(String message) {
+        System.out.println("Envia: " + message);
         try {
             client.send(message);
         } catch (WebsocketNotConnectedException e) {
-            System.out.println("Connexió perduda ...");
+            System.out.println("No se ha podido enviar, no se ha encontrado la conexion con el websocket");
         }
 
     }
 
-    public void connecta(String server) {
+    public void connecta() {
         try {
-            client = new WebSocketClient(new URI("ws://" + server + ":" + "8888"), (Draft) new Draft_6455()) {
+            System.out.println("init connecta");
+            client = new WebSocketClient(new URI(ServerProperties.SERVER_URIs), (Draft) new Draft_6455()) {
                 @Override
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
@@ -68,13 +85,26 @@ public class WebSockets {
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
                     System.out.println("Disconnected from: " + getURI());
-                    MainDashboard.setStateConnected(false);
+                    try {
+                        MainDashboard md = (MainDashboard) dashActivityRef.get();
+                        if (md.getRunning()){
+                            ServerDisconectedDialog.serverDisconected(md);
+                        }
+                    } catch (Exception e){
+
+                    }
+                    MainActivity ma = (MainActivity) mainActivityRef.get();
+
+                    if (ma.getRunning()){
+                        ServerDisconectedDialog.serverDisconected(ma);
+                    }
                 }
 
                 @Override
                 public void onError(Exception ex) { ex.printStackTrace(); }
             };
             client.connect();
+            System.out.println("Final client = new Connecta");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             System.out.println("Error: " + ServerProperties.SERVER_URIs + " no és una direcció URI de WebSocket vàlida");
@@ -150,11 +180,27 @@ public class WebSockets {
         MainDashboard.setArrays(switches,sensors,sliders);
     }
 
+    public boolean getState(){
+        return this.state;
+    }
+
+    public void setState(boolean _state){
+        this.state = _state;
+    }
+
     public void userValidation (String message) {
         System.out.println(message);
         String[] user = message.split("#");
-        if(user[3].equals("true")){ MainActivity.setValidated(true); }
-        else { MainActivity.setValidated(false); }
+        MainActivity ma = (MainActivity) mainActivityRef.get();
+        if(user[3].equals("true")){
+            ma.setValidated(true);
+            ma.navigate();
+        }
+        else { ma.setValidated(false); }
+    }
+
+    public void wsDisconnect(){
+        client.onClose(1,"s",true);
     }
 
 }
