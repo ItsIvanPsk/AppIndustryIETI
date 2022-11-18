@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Log.i("SERVER_RESPONSE", "Incorrect Username or Username don't found");
-            // UserNotFoundDialog.userNotFound(MainActivity.this).show();
         }
     }
 
@@ -117,4 +116,5 @@ public class MainActivity extends AppCompatActivity {
         running = false;
         super.onDestroy();
     }
+
 }

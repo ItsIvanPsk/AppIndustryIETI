@@ -85,6 +85,7 @@ public class MainDashboard extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ws.wsDisconnect();
                 Intent intent = new Intent();
                 startActivity(intent);
             }
@@ -129,9 +130,23 @@ public class MainDashboard extends AppCompatActivity {
             _slider.setMax(sliders.get(slider).getMax());
             _slider.setProgress(sliders.get(slider).getDef());
             _slider.setPadding(0,10,0,10);
+            _slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {  }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    seekBar.getTag(R.id.componentId);
+                    onSeekBarChanges((Integer) seekBar.getTag(R.id.componentId), seekBar.getProgress());
+                }
+            });
             linearLayout.addView(_slider);
         }
     }
+
     private void updateSwithces(){
         LinearLayout linearLayout = findViewById(R.id.dashboard_layout_switches);
         for (int switchIt = 0; switchIt < switches.size(); switchIt++){
@@ -162,9 +177,19 @@ public class MainDashboard extends AppCompatActivity {
         }
     }
 
+    public void onSeekBarChanges(int componentID, int value){
+        System.out.println("AC#" + componentID + "#" + value);
+        ws.envia("AC#" + componentID + "#" + value);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         running = false;
+    }
+
+    public void serverDisconect() {
+        System.out.println("MainDashboard: disconected");
+        ServerDisconectedDialog.serverDisconected(this).show();
     }
 }

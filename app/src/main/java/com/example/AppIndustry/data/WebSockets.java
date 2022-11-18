@@ -84,6 +84,8 @@ public class WebSockets {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
+                    MainDashboard md = (MainDashboard) dashActivityRef.get();
+                    md.serverDisconect();
                     System.out.println("Disconnected from: " + getURI());
                 }
 
