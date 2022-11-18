@@ -32,10 +32,10 @@ public class WebSockets {
     private static WeakReference<Activity> mainActivityRef;
     private static WeakReference<Activity> dashActivityRef;
     public static void updateMainActivity(Activity activity) {
-        mainActivityRef = new WeakReference<Activity>(activity);
+        mainActivityRef = new WeakReference<>(activity);
     }
     public static void updateDashActivity(Activity activity) {
-        dashActivityRef = new WeakReference<Activity>(activity);
+        dashActivityRef = new WeakReference<>(activity);
     }
 
     public void envia(String message) {
@@ -85,19 +85,6 @@ public class WebSockets {
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
                     System.out.println("Disconnected from: " + getURI());
-                    try {
-                        MainDashboard md = (MainDashboard) dashActivityRef.get();
-                        if (md.getRunning()){
-                            ServerDisconectedDialog.serverDisconected(md);
-                        }
-                    } catch (Exception e){
-
-                    }
-                    MainActivity ma = (MainActivity) mainActivityRef.get();
-
-                    if (ma.getRunning()){
-                        ServerDisconectedDialog.serverDisconected(ma);
-                    }
                 }
 
                 @Override
@@ -112,10 +99,11 @@ public class WebSockets {
     }
 
     private void configParser(String message) {
-        ArrayList<CustomSwitch> switches = new ArrayList<CustomSwitch>();
-        ArrayList<CustomSensor> sensors = new ArrayList<CustomSensor>();
-        ArrayList<CustomSlider> sliders = new ArrayList<CustomSlider>();
-        ArrayList<CustomDropdown> dropdowns = new ArrayList<CustomDropdown>();
+        ArrayList<CustomSwitch> switches = new ArrayList<>();
+        ArrayList<CustomSensor> sensors = new ArrayList<>();
+        ArrayList<CustomSlider> sliders = new ArrayList<>();
+        ArrayList<CustomDropdown> dropdowns = new ArrayList<>();
+        ArrayList<CustomOption> opts;
         System.out.println("Este es el mensaje: " + message);
         String[] components = message.split("%%");
         System.out.println(components.length);
@@ -153,20 +141,27 @@ public class WebSockets {
                         )
                 );
             } else if(componentID.equals("DD")){
-                ArrayList<CustomOption> opts = new ArrayList<>();
+                opts = new ArrayList<>();
                 System.out.println("AQUI IVAN: " + attr[3]);
                 String[] aux_opt = attr[3].split(",");
-                for(int k = 0; k < aux_opt.length; k++){
+                for(int k = 0; k < aux_opt.length; k++) {
                     String[] optionsValues = aux_opt[k].split("//");
-                    /*
-                    opts.add(
-                            new CustomOption(
-                                Integer.parseInt(optionsValues[0]), optionsValues[1]
-                            )
-                    );
-                     */
+                    if (k == 0) {
+                        opts.add(
+                                new CustomOption(
+                                        Integer.parseInt(optionsValues[0].substring(1)),
+                                        optionsValues[1].substring(0, optionsValues[1].length())
+                                )
+                        );
+                    } else if (k == optionsValues.length - 1) {
+                        opts.add(
+                                new CustomOption(
+                                        Integer.parseInt(optionsValues[0].substring(1)),
+                                        optionsValues[1].substring(0, optionsValues[1].length() - 1)
+                                )
+                        );
+                    }
                 }
-
                 dropdowns.add(
                         new CustomDropdown(
                                 Integer.parseInt(attr[1]),
@@ -177,7 +172,7 @@ public class WebSockets {
             }
         }
 
-        MainDashboard.setArrays(switches,sensors,sliders);
+        MainDashboard.setArrays(switches,sensors,sliders,dropdowns);
     }
 
     public boolean getState(){

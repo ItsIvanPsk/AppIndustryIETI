@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        running = false;
         super.onDestroy();
-
     }
 }

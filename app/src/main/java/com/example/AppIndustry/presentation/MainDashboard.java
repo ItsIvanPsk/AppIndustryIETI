@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -16,10 +17,12 @@ import com.example.AppIndustry.R;
 import com.example.AppIndustry.data.WebSockets;
 import com.example.AppIndustry.presentation.dialog.ServerDisconectedDialog;
 import com.example.AppIndustry.utils.ServerProperties;
+import com.example.AppIndustry.utils.components.CustomDropdown;
 import com.example.AppIndustry.utils.components.CustomSensor;
 import com.example.AppIndustry.utils.components.CustomSlider;
 import com.example.AppIndustry.utils.components.CustomSwitch;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,7 +32,7 @@ public class MainDashboard extends AppCompatActivity {
     static ArrayList<CustomSwitch> switches;
     static ArrayList<CustomSensor> sensors;
     static ArrayList<CustomSlider> sliders;
-    static ArrayList<CustomSlider> dropdowns;
+    static ArrayList<CustomDropdown> dropdowns;
     Button loginBtn;
     WebSockets ws;
     boolean running = false;
@@ -54,9 +57,9 @@ public class MainDashboard extends AppCompatActivity {
         sensors = new ArrayList<>();
         sliders = new ArrayList<>();
 
-        WebSockets.updateDashActivity(this);
-
         loginBtn = findViewById(R.id.dashboard_login_button);
+
+        WebSockets.updateDashActivity(this);
 
         try{
             ws = new WebSockets();
@@ -75,9 +78,6 @@ public class MainDashboard extends AppCompatActivity {
         updateSwithces();
         updateDropdowns();
         setupListeners();
-        MainActivity ma = new MainActivity();
-        ma.setRunning(false);
-        running = true;
     }
 
     private void setupListeners() {
@@ -99,11 +99,13 @@ public class MainDashboard extends AppCompatActivity {
     public static void setArrays(
             ArrayList<CustomSwitch> _switches,
             ArrayList<CustomSensor> _sensors,
-            ArrayList<CustomSlider> _sliders
+            ArrayList<CustomSlider> _sliders,
+            ArrayList<CustomDropdown> _dropdowns
     ){
         switches = _switches;
         sensors = _sensors;
         sliders = _sliders;
+        dropdowns = _dropdowns;
 
         for (int i = 0; i < sensors.size(); i++){
             System.out.println(sensors.get(i).toString());
@@ -113,6 +115,9 @@ public class MainDashboard extends AppCompatActivity {
         }
         for (int i = 0; i < switches.size(); i++){
             System.out.println(switches.get(i).toString());
+        }
+        for (int i = 0; i < dropdowns.size(); i++){
+            System.out.println(dropdowns.get(i).toString());
         }
     }
 
@@ -137,12 +142,23 @@ public class MainDashboard extends AppCompatActivity {
         }
     }
     private void updateDropdowns(){
+        System.out.println("spi size = " + dropdowns.size());
         LinearLayout linearLayout = findViewById(R.id.dashboard_layout_dropdown);
-        for (int dropdown = 0; dropdown < sliders.size(); dropdown++){
+        for (int dropdown = 0; dropdown < dropdowns.size(); dropdown++){
+            ArrayList<String> spinner_options = new ArrayList<>();
             Spinner _spinner = new Spinner(this);
             _spinner.setEnabled(true);
             _spinner.setPadding(0,10,0,10);
+
+            for (int i = 0; i < dropdowns.get(dropdown).getOptions().size() ; i++){
+                spinner_options.add(dropdowns.get(dropdown).getOptions().get(i).getLabel());
+            }
+            ArrayAdapter<String> spinnerArrayAdapter
+                    = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, spinner_options);
+            _spinner.setAdapter(spinnerArrayAdapter);
+
             linearLayout.addView(_spinner);
+
         }
     }
 
