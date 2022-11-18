@@ -2,6 +2,8 @@ package com.example.AppIndustry.data;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.example.AppIndustry.presentation.MainActivity;
 import com.example.AppIndustry.presentation.MainDashboard;
@@ -29,13 +31,16 @@ public class WebSockets {
     WebSocketClient client;
     boolean state;
 
+    static Activity currentAct;
+
     private static WeakReference<Activity> mainActivityRef;
-    private static WeakReference<Activity> dashActivityRef;
+
     public static void updateMainActivity(Activity activity) {
         mainActivityRef = new WeakReference<>(activity);
     }
-    public static void updateDashActivity(Activity activity) {
-        dashActivityRef = new WeakReference<>(activity);
+
+    public static void regAct(Activity activity){
+        currentAct = activity;
     }
 
     public void envia(String message) {
@@ -84,9 +89,15 @@ public class WebSockets {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    MainDashboard md = (MainDashboard) dashActivityRef.get();
-                    md.serverDisconect();
                     System.out.println("Disconnected from: " + getURI());
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ServerDisconectedDialog.serverDisconected(currentAct).show();
+
+                        }
+                    });
                 }
 
                 @Override

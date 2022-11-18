@@ -6,5 +6,8 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 public class ConnectionUseCase {
-    static WebSockets client = new WebSockets();
+    static WebSockets ws = new WebSockets();;
+    public ConnectionUseCase(){
+
+    }
 }

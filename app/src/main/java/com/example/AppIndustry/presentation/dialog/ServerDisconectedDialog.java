@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.example.AppIndustry.presentation.MainActivity;
+
 public class ServerDisconectedDialog extends DialogFragment {
+
     public static Dialog serverDisconected(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setCancelable(false);
@@ -18,8 +22,11 @@ public class ServerDisconectedDialog extends DialogFragment {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("SERVER_DISCONECTED","You have been disconected from the server");
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
                     }
                 });
         return builder.create();
     }
+
 }

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     static String uv = "";
     boolean running = false;
 
-    WebSockets ws;
+    //WebSockets ws;
 
     public void setRunning(boolean _running){
         this.running = _running;
@@ -74,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
                         && !serverInput.getText().equals("")
                 ) {
                     try{
-                        ws = new WebSockets();
+                        // ws = new WebSockets();
                         System.out.println(serverInput.getText().toString());
-                        ws.connecta();
+                        ConnectionUseCase.ws.connecta();
                         System.out.println("Conectado");
                         Thread.sleep(2000);
-                        ws.envia(
+                        ConnectionUseCase.ws.envia(
                                 "UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                         );
                     }catch (Exception e){
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this,MainDashboard.class);
             MainDashboard.clearArrs();
             intent.putExtra(username, username);
-            ws.wsDisconnect();
+            //ConnectionUseCase.ws.wsDisconnect();
             startActivity(intent);
         } else {
             Log.i("SERVER_RESPONSE", "Incorrect Username or Username don't found");
@@ -107,9 +107,12 @@ public class MainActivity extends AppCompatActivity {
         validated = val;
     }
 
-    public WebSockets getWS() {
+    /*
+        public WebSockets getWS() {
         return this.ws;
     }
+     */
+
 
     @Override
     protected void onDestroy() {

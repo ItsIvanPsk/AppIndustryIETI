@@ -34,7 +34,7 @@ public class MainDashboard extends AppCompatActivity {
     static ArrayList<CustomSlider> sliders;
     static ArrayList<CustomDropdown> dropdowns;
     Button loginBtn;
-    WebSockets ws;
+    // WebSockets ws;
     boolean running = false;
 
     public boolean getRunning(){
@@ -56,17 +56,18 @@ public class MainDashboard extends AppCompatActivity {
         switches = new ArrayList<>();
         sensors = new ArrayList<>();
         sliders = new ArrayList<>();
+        dropdowns = new ArrayList<>();
+
+        WebSockets.regAct(this);
 
         loginBtn = findViewById(R.id.dashboard_login_button);
 
-        WebSockets.updateDashActivity(this);
-
         try{
-            ws = new WebSockets();
-            ws.connecta();
+            // ConnectionUseCase.ws = new WebSockets();
+            // ConnectionUseCase.ws.connecta();
             System.out.println("MainDashboard: Conectado");
             Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
-            ws.envia(
+            ConnectionUseCase.ws.envia(
                     "CF#"
             );
             Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
@@ -85,7 +86,7 @@ public class MainDashboard extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ws.wsDisconnect();
+                ConnectionUseCase.ws.wsDisconnect();
                 Intent intent = new Intent();
                 startActivity(intent);
             }
@@ -179,7 +180,7 @@ public class MainDashboard extends AppCompatActivity {
 
     public void onSeekBarChanges(int componentID, int value){
         System.out.println("AC#" + componentID + "#" + value);
-        ws.envia("AC#" + componentID + "#" + value);
+        ConnectionUseCase.ws.envia("AC#" + componentID + "#" + value);
     }
 
     @Override
