@@ -1,7 +1,6 @@
 package com.example.AppIndustry.data;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 public class WebSockets {
 
     WebSocketClient client;
-    boolean state;
 
     static Activity currentAct;
 
@@ -44,7 +42,7 @@ public class WebSockets {
     }
 
     public void envia(String message) {
-        System.out.println("Envia: " + message);
+        System.out.println("App sends: " + message);
         try {
             client.send(message);
         } catch (WebsocketNotConnectedException e) {
@@ -61,7 +59,6 @@ public class WebSockets {
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
                     System.out.println(token);
-
                     /*
                         UV# -> User validation
                         CF# -> DashboardConfig
@@ -91,13 +88,7 @@ public class WebSockets {
                 public void onClose(int code, String reason, boolean remote) {
                     System.out.println("Disconnected from: " + getURI());
                     Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ServerDisconectedDialog.serverDisconected(currentAct).show();
-
-                        }
-                    });
+                    handler.post(() -> ServerDisconectedDialog.serverDisconected(currentAct).show());
                 }
 
                 @Override
@@ -118,82 +109,86 @@ public class WebSockets {
         ArrayList<CustomDropdown> dropdowns = new ArrayList<>();
         ArrayList<CustomOption> opts;
         System.out.println("Este es el mensaje: " + message);
+
         String[] components = message.split("%%");
+
         System.out.println(components.length);
-        for (int i = 0; i < components.length; i++){
-            String componentID = components[i].substring(0,2);
-            String[] attr = components[i].split("#");
+
+        for (String component : components) {
+            String componentID = component.substring(0, 2);
+
             System.out.println(componentID);
-            if(componentID.equals("SW")){
-                switches.add(
-                        new CustomSwitch(
-                                Integer.parseInt(attr[1]),
-                                attr[2],
-                                attr[3]
-                        )
-                );
-            } else if(componentID.equals("SL")){
-                sliders.add(
-                        new CustomSlider(
-                                Integer.parseInt(attr[1]),
-                                Integer.parseInt(attr[2]),
-                                Integer.parseInt(attr[3]),
-                                Integer.parseInt(attr[4]),
-                                Integer.parseInt(attr[5]),
-                                attr[6]
-                        )
-                );
-            } else if(componentID.equals("SS")){
-                sensors.add(
-                        new CustomSensor(
-                                Integer.parseInt(attr[1]),
-                                attr[2],
-                                attr[3],
-                                attr[4],
-                                attr[5]
-                        )
-                );
-            } else if(componentID.equals("DD")){
-                opts = new ArrayList<>();
-                System.out.println("AQUI IVAN: " + attr[3]);
-                String[] aux_opt = attr[3].split(",");
-                for(int k = 0; k < aux_opt.length; k++) {
-                    String[] optionsValues = aux_opt[k].split("//");
-                    if (k == 0) {
-                        opts.add(
-                                new CustomOption(
-                                        Integer.parseInt(optionsValues[0].substring(1)),
-                                        optionsValues[1].substring(0, optionsValues[1].length())
-                                )
-                        );
-                    } else if (k == optionsValues.length - 1) {
-                        opts.add(
-                                new CustomOption(
-                                        Integer.parseInt(optionsValues[0].substring(1)),
-                                        optionsValues[1].substring(0, optionsValues[1].length() - 1)
-                                )
-                        );
+
+            String[] attr = component.split("#");
+
+            switch (componentID) {
+                case "SW":
+                    switches.add(
+                            new CustomSwitch(
+                                    Integer.parseInt(attr[1]),
+                                    attr[2],
+                                    attr[3]
+                            )
+                    );
+                    break;
+                case "SL":
+                    sliders.add(
+                            new CustomSlider(
+                                    Integer.parseInt(attr[1]),
+                                    Integer.parseInt(attr[2]),
+                                    Integer.parseInt(attr[3]),
+                                    Integer.parseInt(attr[4]),
+                                    Integer.parseInt(attr[5]),
+                                    attr[6]
+                            )
+                    );
+                    break;
+                case "SS":
+                    sensors.add(
+                            new CustomSensor(
+                                    Integer.parseInt(attr[1]),
+                                    attr[2],
+                                    attr[3],
+                                    attr[4],
+                                    attr[5]
+                            )
+                    );
+                    break;
+                case "DD":
+                    opts = new ArrayList<>();
+                    String[] sepComas = attr[4].split(",");
+                    for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
+                        if (sepOpc == sepComas.length - 1) {
+                            sepComas[sepOpc] = sepComas[sepOpc].substring(1, sepComas[sepOpc].length() - 1);
+                        } else {
+                            sepComas[sepOpc] = sepComas[sepOpc].substring(1);
+                        }
                     }
-                }
-                dropdowns.add(
-                        new CustomDropdown(
-                                Integer.parseInt(attr[1]),
-                                Integer.parseInt(attr[2]),
-                                opts
-                        )
-                );
+
+                    for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
+                        String[] options = sepComas[sepOpc].split("//");
+                        opts.add(
+                                new CustomOption(
+                                        Integer.parseInt(options[0]),
+                                        options[1]
+                                )
+                        );
+                        System.out.println(opts.get(sepOpc).toString());
+                    }
+
+                    dropdowns.add(
+                            new CustomDropdown(
+                                    Integer.parseInt(attr[1]),
+                                    Integer.parseInt(attr[2]),
+                                    "",
+                                    opts
+                            )
+                    );
+                    break;
             }
         }
 
         MainDashboard.setArrays(switches,sensors,sliders,dropdowns);
-    }
-
-    public boolean getState(){
-        return this.state;
-    }
-
-    public void setState(boolean _state){
-        this.state = _state;
     }
 
     public void userValidation (String message) {
@@ -208,7 +203,7 @@ public class WebSockets {
     }
 
     public void wsDisconnect(){
-        client.onClose(1,"s",true);
+        client.onClose(5,"in",true);
     }
 
 }

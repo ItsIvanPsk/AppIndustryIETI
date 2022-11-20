@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class CustomDropdown {
     private int id, def;
+    String text;
     private ArrayList<CustomOption> options = new ArrayList<>();
 
     public void setDef(int def) { this.def = def; }
@@ -20,10 +21,12 @@ public class CustomDropdown {
     public CustomDropdown(
             int _id,
             int _def,
+            String _text,
             ArrayList<CustomOption> _options
     ){
         this.id = _id;
         this.def = _def;
+        this.text = _text;
         this.options = _options;
     }
 }
