@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">empty1</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="login_again">Login again</string>
+
+    <item name="componentId" type="id" />
+
+</resources>
