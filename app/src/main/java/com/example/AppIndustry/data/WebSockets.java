@@ -6,6 +6,7 @@ import android.os.Looper;
 
 import com.example.AppIndustry.presentation.MainActivity;
 import com.example.AppIndustry.presentation.MainDashboard;
+import com.example.AppIndustry.presentation.dialog.NoXMLoadedDialog;
 import com.example.AppIndustry.presentation.dialog.ServerDisconectedDialog;
 import com.example.AppIndustry.utils.components.CustomDropdown;
 import com.example.AppIndustry.utils.components.CustomOption;
@@ -46,19 +47,16 @@ public class WebSockets {
         try {
             client.send(message);
         } catch (WebsocketNotConnectedException e) {
-            System.out.println("No se ha podido enviar, no se ha encontrado la conexion con el websocket");
         }
 
     }
 
     public void connecta() {
         try {
-            System.out.println("init connecta");
             client = new WebSocketClient(new URI(ServerProperties.SERVER_URIs), (Draft) new Draft_6455()) {
                 @Override
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
-                    System.out.println(token);
                     /*
                         UV# -> User validation
                         CF# -> DashboardConfig
@@ -72,7 +70,6 @@ public class WebSockets {
                             userValidation(message);
                             break;
                         case "CF":
-                            System.out.println("onMessage: " + message);
                             configParser(message);
                             break;
                     }
@@ -95,7 +92,6 @@ public class WebSockets {
                 public void onError(Exception ex) { ex.printStackTrace(); }
             };
             client.connect();
-            System.out.println("Final client = new Connecta");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             System.out.println("Error: " + ServerProperties.SERVER_URIs + " no és una direcció URI de WebSocket vàlida");
@@ -103,96 +99,94 @@ public class WebSockets {
     }
 
     private void configParser(String message) {
-        ArrayList<CustomSwitch> switches = new ArrayList<>();
-        ArrayList<CustomSensor> sensors = new ArrayList<>();
-        ArrayList<CustomSlider> sliders = new ArrayList<>();
-        ArrayList<CustomDropdown> dropdowns = new ArrayList<>();
-        ArrayList<CustomOption> opts;
-        System.out.println("Este es el mensaje: " + message);
+        if(message.equals("CF%%")){
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> NoXMLoadedDialog.noXMLoaded(currentAct).show());
+        } else {
+            ArrayList<CustomSwitch> switches = new ArrayList<>();
+            ArrayList<CustomSensor> sensors = new ArrayList<>();
+            ArrayList<CustomSlider> sliders = new ArrayList<>();
+            ArrayList<CustomDropdown> dropdowns = new ArrayList<>();
+            ArrayList<CustomOption> opts;
 
-        String[] components = message.split("%%");
+            String[] components = message.split("%%");
 
-        System.out.println(components.length);
+            for (String component : components) {
+                String componentID = component.substring(0, 2);
 
-        for (String component : components) {
-            String componentID = component.substring(0, 2);
+                String[] attr = component.split("#");
 
-            System.out.println(componentID);
-
-            String[] attr = component.split("#");
-
-            switch (componentID) {
-                case "SW":
-                    switches.add(
-                            new CustomSwitch(
-                                    Integer.parseInt(attr[1]),
-                                    attr[2],
-                                    attr[3]
-                            )
-                    );
-                    break;
-                case "SL":
-                    sliders.add(
-                            new CustomSlider(
-                                    Integer.parseInt(attr[1]),
-                                    Integer.parseInt(attr[2]),
-                                    Integer.parseInt(attr[3]),
-                                    Integer.parseInt(attr[4]),
-                                    Integer.parseInt(attr[5]),
-                                    attr[6]
-                            )
-                    );
-                    break;
-                case "SS":
-                    sensors.add(
-                            new CustomSensor(
-                                    Integer.parseInt(attr[1]),
-                                    attr[2],
-                                    attr[3],
-                                    attr[4],
-                                    attr[5]
-                            )
-                    );
-                    break;
-                case "DD":
-                    opts = new ArrayList<>();
-                    String[] sepComas = attr[4].split(",");
-                    for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
-                        if (sepOpc == sepComas.length - 1) {
-                            sepComas[sepOpc] = sepComas[sepOpc].substring(1, sepComas[sepOpc].length() - 1);
-                        } else {
-                            sepComas[sepOpc] = sepComas[sepOpc].substring(1);
-                        }
-                    }
-
-                    for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
-                        String[] options = sepComas[sepOpc].split("//");
-                        opts.add(
-                                new CustomOption(
-                                        Integer.parseInt(options[0]),
-                                        options[1]
+                switch (componentID) {
+                    case "SW":
+                        switches.add(
+                                new CustomSwitch(
+                                        Integer.parseInt(attr[1]),
+                                        attr[2],
+                                        attr[3]
                                 )
                         );
-                        System.out.println(opts.get(sepOpc).toString());
-                    }
+                        break;
+                    case "SL":
+                        sliders.add(
+                                new CustomSlider(
+                                        Integer.parseInt(attr[1]),
+                                        Integer.parseInt(attr[2]),
+                                        Integer.parseInt(attr[3]),
+                                        Integer.parseInt(attr[4]),
+                                        Integer.parseInt(attr[5]),
+                                        attr[6]
+                                )
+                        );
+                        break;
+                    case "SS":
+                        sensors.add(
+                                new CustomSensor(
+                                        Integer.parseInt(attr[1]),
+                                        attr[2],
+                                        attr[3],
+                                        attr[4],
+                                        attr[5]
+                                )
+                        );
+                        break;
+                    case "DD":
+                        opts = new ArrayList<>();
+                        String[] sepComas = attr[4].split(",");
+                        for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
+                            if (sepOpc == sepComas.length - 1) {
+                                sepComas[sepOpc] = sepComas[sepOpc].substring(1, sepComas[sepOpc].length() - 1);
+                            } else {
+                                sepComas[sepOpc] = sepComas[sepOpc].substring(1);
+                            }
+                        }
 
-                    dropdowns.add(
-                            new CustomDropdown(
-                                    Integer.parseInt(attr[1]),
-                                    Integer.parseInt(attr[2]),
-                                    "",
-                                    opts
-                            )
-                    );
-                    break;
+                        for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
+                            String[] options = sepComas[sepOpc].split("//");
+                            opts.add(
+                                    new CustomOption(
+                                            Integer.parseInt(options[0]),
+                                            options[1]
+                                    )
+                            );
+                        }
+
+                        dropdowns.add(
+                                new CustomDropdown(
+                                        Integer.parseInt(attr[1]),
+                                        Integer.parseInt(attr[2]),
+                                        attr[3],
+                                        opts
+                                )
+                        );
+                        break;
+                }
             }
-        }
 
-        MainDashboard.setArrays(switches,sensors,sliders,dropdowns);
+            MainDashboard.setArrays(switches,sensors,sliders,dropdowns);
+        }
     }
 
     public void userValidation (String message) {
-        System.out.println(message);
         String[] user = message.split("#");
         MainActivity ma = (MainActivity) mainActivityRef.get();
         if(user[3].equals("true")){

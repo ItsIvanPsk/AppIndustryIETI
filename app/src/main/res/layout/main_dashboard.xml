@@ -42,7 +42,8 @@
             <ScrollView
                 android:id="@+id/scroll_spinners"
                 android:layout_width="200dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:id="@+id/dashboard_layout_sensors"
@@ -66,7 +67,8 @@
             <ScrollView
                 android:id="@+id/scroll_switches"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:id="@+id/dashboard_layout_switches"
@@ -102,7 +104,8 @@
             <ScrollView
                 android:id="@+id/scroll_sliders"
                 android:layout_width="200dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:id="@+id/dashboard_layout_sliders"
@@ -125,7 +128,8 @@
             <ScrollView
                 android:id="@+id/scroll_dropdown"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:id="@+id/dashboard_layout_dropdown"
@@ -141,10 +145,10 @@
                         android:textColor="@color/colorPrimary"
                         android:gravity="center_horizontal"/>
 
-
                 </LinearLayout>
 
             </ScrollView>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -153,7 +157,7 @@
         android:id="@+id/dashboard_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login again"
+        android:text="@string/login_again"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

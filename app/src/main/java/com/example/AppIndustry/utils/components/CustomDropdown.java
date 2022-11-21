@@ -15,7 +15,9 @@ public class CustomDropdown {
     public int getId() {
         return id;
     }
-
+    public String getText(){
+        return this.text;
+    }
     public ArrayList<CustomOption> getOptions(){ return this.options; }
 
     public CustomDropdown(
