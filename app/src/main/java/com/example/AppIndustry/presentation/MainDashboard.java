@@ -175,6 +175,7 @@ public class MainDashboard extends AppCompatActivity {
             ArrayAdapter<String> spinnerArrayAdapter
                     = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, spinner_options);
             _spinner.setAdapter(spinnerArrayAdapter);
+            _spinner.setSelection(dropdowns.get(dropdown).getDef() - 1);
             _spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
