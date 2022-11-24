@@ -9,13 +9,17 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="533cd54f-e88a-4aff-ba95-941e9d5206bd" name="Changes" comment="//WIP">
+    <list default="true" id="533cd54f-e88a-4aff-ba95-941e9d5206bd" name="Changes" comment="Release v0.2 sprint review SP02">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/dialog/UserNotFoundDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/dialog/UserNotFoundDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/ServerProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/ServerProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/ServerUtilities.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/UserUtilities.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomDropdown.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomDropdown.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSensor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSwitch.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSwitch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/main_dashboard.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/main_dashboard.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +86,7 @@
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="cidr.known.project.marker" value="true" />
+    <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="JAVA" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -261,13 +266,22 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Scratch" type="Java Scratch" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Scratch" />
+      <option name="SCRATCH_FILE_URL" value="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Android App.App" />
       <item itemvalue="Android App.app" />
       <item itemvalue="Android App.MainDashboard" />
+      <item itemvalue="Java Scratch.Scratch" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Java Scratch.Scratch" />
         <item itemvalue="Android App.MainDashboard" />
       </list>
     </recent_temporary>
@@ -323,7 +337,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669055262753</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Release v0.2 sprint review SP02">
+      <created>1669061567215</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1669061567215</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -351,6 +372,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="//WIP" />
-    <option name="LAST_COMMIT_MESSAGE" value="//WIP" />
+    <MESSAGE value="Release v0.2 sprint review SP02" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release v0.2 sprint review SP02" />
   </component>
 </project>

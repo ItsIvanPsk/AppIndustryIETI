@@ -15,143 +15,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.04" />
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/dashboard_scroll"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="525dp"
+        app:layout_constraintBottom_toTopOf="@+id/dashboard_login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.575">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.52">
-
-            <ScrollView
-                android:id="@+id/scroll_spinners"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:id="@+id/dashboard_layout_sensors"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Sensors"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center_horizontal" />
-
-                </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/dashboard_label_header">
 
 
-            </ScrollView>
 
-            <ScrollView
-                android:id="@+id/scroll_switches"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:id="@+id/dashboard_layout_switches"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Switches"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center_horizontal" />
-
-                </LinearLayout>
-
-            </ScrollView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dashboard_label_header"
-            app:layout_constraintVertical_bias="0.52">
-
-            <ScrollView
-                android:id="@+id/scroll_sliders"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:id="@+id/dashboard_layout_sliders"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Sliders"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center_horizontal"/>
-
-                </LinearLayout>
-
-
-            </ScrollView>
-
-            <ScrollView
-                android:id="@+id/scroll_dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:id="@+id/dashboard_layout_dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Spinners"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center_horizontal"/>
-
-                </LinearLayout>
-
-            </ScrollView>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/dashboard_login_button"

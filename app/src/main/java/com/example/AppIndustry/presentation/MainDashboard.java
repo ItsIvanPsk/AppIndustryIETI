@@ -3,6 +3,7 @@ package com.example.AppIndustry.presentation;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -34,12 +36,17 @@ public class MainDashboard extends AppCompatActivity {
     static ArrayList<CustomDropdown> dropdowns;
     Button loginBtn;
     boolean running = false;
+    static Integer blockCant;
 
     public static void clearArrays() {
         switches = new ArrayList<>();
         sensors = new ArrayList<>();
         sliders = new ArrayList<>();
         dropdowns = new ArrayList<>();
+    }
+
+    public static void setBlockCant(Integer _blockCant) {
+        blockCant = _blockCant;
     }
 
     @SuppressLint("MissingInflatedId")
@@ -63,11 +70,19 @@ public class MainDashboard extends AppCompatActivity {
             Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
         }catch (Exception e){ }
 
-        updateSliders();
-        updateSwitches();
-        updateDropdowns();
-        updateSensors();
+        updateUI();
         setupListeners();
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void updateUI() {
+        ScrollView scroll = findViewById(R.id.dashboard_scroll);
+
+        for (int block = 0; block < blockCant; block++) {
+            LinearLayout componentLayout = new LinearLayout(this);
+            componentLayout.setBackgroundColor(Color.rgb(255,0,255));
+            scroll.addView(componentLayout);
+        }
 
     }
 
@@ -93,43 +108,7 @@ public class MainDashboard extends AppCompatActivity {
         dropdowns = _dropdowns;
     }
 
-    private void updateSliders(){
-        LinearLayout linearLayout = findViewById(R.id.dashboard_layout_sliders);
-        for (int slider = 0; slider < sliders.size(); slider++){
-            TextView tv = new TextView(this);
-            tv.setText(sliders.get(slider).getLabel());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tv.setTextAppearance(R.style.ControlHeader);
-            }
-            linearLayout.addView(tv);
-            SeekBar _slider = new SeekBar(this);
-            _slider.setTag(R.id.componentId, sliders.get(slider).getId());
-            _slider.setMax(sliders.get(slider).getMax());
-            _slider.setProgress(sliders.get(slider).getDef());
-            _slider.setPadding(0,10,0,10);
-            _slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {  }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    seekBar.getTag(R.id.componentId);
-                    onComponentChanges(
-                            "SL",
-                            (Integer) seekBar.getTag(R.id.componentId),
-                            null,
-                            seekBar.getProgress()
-                    );
-                }
-            });
-            linearLayout.addView(_slider);
-        }
-    }
     private void updateSwitches(){
-        LinearLayout linearLayout = findViewById(R.id.dashboard_layout_switches);
         for (int switchIt = 0; switchIt < switches.size(); switchIt++){
             LinearLayout inner_linearLayout = new LinearLayout(this);
             inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -151,11 +130,9 @@ public class MainDashboard extends AppCompatActivity {
             );
             inner_linearLayout.addView(tv);
             inner_linearLayout.addView(_switch);
-            linearLayout.addView(inner_linearLayout);
         }
     }
     private void updateDropdowns(){
-        LinearLayout linearLayout = findViewById(R.id.dashboard_layout_dropdown);
         for (int dropdown = 0; dropdown < dropdowns.size(); dropdown++){
             ArrayList<String> spinner_options = new ArrayList<>();
             TextView tv = new TextView(this);
@@ -163,7 +140,6 @@ public class MainDashboard extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 tv.setTextAppearance(R.style.ControlHeader);
             }
-            linearLayout.addView(tv);
             Spinner _spinner = new Spinner(this);
             _spinner.setEnabled(true);
             _spinner.setPadding(0,10,0,10);
@@ -188,11 +164,9 @@ public class MainDashboard extends AppCompatActivity {
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) { }
             });
-            linearLayout.addView(_spinner);
         }
     }
     private void updateSensors(){
-        LinearLayout linearLayout = findViewById(R.id.dashboard_layout_sensors);
         for (int sensor = 0; sensor < sensors.size(); sensor++){
             TextView _sensor = new TextView(this);
             TextView sensorHeader = new TextView(this);
@@ -208,9 +182,37 @@ public class MainDashboard extends AppCompatActivity {
                     + sensors.get(sensor).getThresholdhigh() + sensors.get(sensor).getUnits()
                     + "\n" + "\n";
             _sensor.setText(sensorText);
-            linearLayout.addView(sensorHeader);
-            linearLayout.addView(_sensor);
         }
+    }
+    public SeekBar createSeekBar(CustomSlider slider){
+        SeekBar _slider = new SeekBar(this);
+        _slider.setTag(R.id.componentId, slider.getId());
+        _slider.setTag(R.id.blockID, slider.getBlockID());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            _slider.setMin(slider.getMin());
+        }
+        _slider.setMax(slider.getMax());
+        _slider.setProgress(slider.getDef());
+        _slider.setPadding(0,10,0,10);
+
+        _slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {  }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                seekBar.getTag(R.id.componentId);
+                onComponentChanges(
+                        "SL",
+                        (Integer) seekBar.getTag(R.id.componentId),
+                        null,
+                        seekBar.getProgress()
+                );
+            }
+        });
+
+        return _slider;
     }
     public void onComponentChanges(
             String componentType,

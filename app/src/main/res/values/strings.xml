@@ -7,5 +7,7 @@
     <string name="login_again">Login again</string>
 
     <item name="componentId" type="id" />
+    <item name="componentIndex" type="id" />
+    <item name="blockID" type="id" />
 
 </resources>

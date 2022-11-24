@@ -46,9 +46,7 @@ public class WebSockets {
         System.out.println("App sends: " + message);
         try {
             client.send(message);
-        } catch (WebsocketNotConnectedException e) {
-        }
-
+        } catch (WebsocketNotConnectedException e) { }
     }
 
     public void connecta() {
@@ -57,14 +55,6 @@ public class WebSockets {
                 @Override
                 public void onMessage(String message) {
                     String token = message.substring(0,2);
-                    /*
-                        UV# -> User validation
-                        CF# -> DashboardConfig
-                            DD -> Dropdown
-                            SW -> Switch
-                            SS -> Sensor
-                            SL -> Slider
-                     */
                     switch (token) {
                         case "UV":
                             userValidation(message);
@@ -110,79 +100,89 @@ public class WebSockets {
             ArrayList<CustomOption> opts;
 
             String[] components = message.split("%%");
+            System.out.println(message);
+            System.out.println(components.length);
+            Integer blockCant = Integer.parseInt(components[1]);
 
-            for (String component : components) {
-                String componentID = component.substring(0, 2);
+            for (int component = 0; component < components.length; component++) {
+                if(component != 0 && component != 1){
+                    System.out.println("Component: " + component);
+                    String componentID = components[component].substring(0, 2).toString();
+                    String[] attr = components[component].split("#");
 
-                String[] attr = component.split("#");
-
-                switch (componentID) {
-                    case "SW":
-                        switches.add(
-                                new CustomSwitch(
-                                        Integer.parseInt(attr[1]),
-                                        attr[2],
-                                        attr[3]
-                                )
-                        );
-                        break;
-                    case "SL":
-                        sliders.add(
-                                new CustomSlider(
-                                        Integer.parseInt(attr[1]),
-                                        Integer.parseInt(attr[2]),
-                                        Integer.parseInt(attr[3]),
-                                        Integer.parseInt(attr[4]),
-                                        Integer.parseInt(attr[5]),
-                                        attr[6]
-                                )
-                        );
-                        break;
-                    case "SS":
-                        sensors.add(
-                                new CustomSensor(
-                                        Integer.parseInt(attr[1]),
-                                        attr[2],
-                                        attr[3],
-                                        attr[4],
-                                        attr[5]
-                                )
-                        );
-                        break;
-                    case "DD":
-                        opts = new ArrayList<>();
-                        String[] sepComas = attr[4].split(",");
-                        for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
-                            if (sepOpc == sepComas.length - 1) {
-                                sepComas[sepOpc] = sepComas[sepOpc].substring(1, sepComas[sepOpc].length() - 1);
-                            } else {
-                                sepComas[sepOpc] = sepComas[sepOpc].substring(1);
-                            }
-                        }
-
-                        for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
-                            String[] options = sepComas[sepOpc].split("//");
-                            opts.add(
-                                    new CustomOption(
-                                            Integer.parseInt(options[0]),
-                                            options[1]
+                    switch (componentID) {
+                        case "SW":
+                            switches.add(
+                                    new CustomSwitch(
+                                            Integer.parseInt(attr[1]),
+                                            Integer.parseInt(attr[2]),
+                                            attr[3],
+                                            attr[4]
                                     )
                             );
-                        }
+                            break;
+                        case "SL":
+                            sliders.add(
+                                    new CustomSlider(
+                                            Integer.parseInt(attr[1]),
+                                            Integer.parseInt(attr[2]),
+                                            Integer.parseInt(attr[3]),
+                                            Integer.parseInt(attr[4]),
+                                            Integer.parseInt(attr[5]),
+                                            Integer.parseInt(attr[6]),
+                                            attr[7]
+                                    )
+                            );
+                            break;
+                        case "SS":
+                            sensors.add(
+                                    new CustomSensor(
+                                            Integer.parseInt(attr[1]),
+                                            attr[2],
+                                            attr[3],
+                                            attr[4],
+                                            attr[5],
+                                            attr[6]
+                                    )
+                            );
+                            break;
+                        case "DD":
+                            opts = new ArrayList<>();
+                            String[] sepComas = attr[4].split(",");
+                            for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
+                                if (sepOpc == sepComas.length - 1) {
+                                    sepComas[sepOpc] = sepComas[sepOpc].substring(1, sepComas[sepOpc].length() - 1);
+                                } else {
+                                    sepComas[sepOpc] = sepComas[sepOpc].substring(1);
+                                }
+                            }
 
-                        dropdowns.add(
-                                new CustomDropdown(
-                                        Integer.parseInt(attr[1]),
-                                        Integer.parseInt(attr[2]),
-                                        attr[3],
-                                        opts
-                                )
-                        );
-                        break;
+                            for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
+                                String[] options = sepComas[sepOpc].split("//");
+                                opts.add(
+                                        new CustomOption(
+                                                Integer.parseInt(options[0]),
+                                                options[1]
+                                        )
+                                );
+                            }
+
+                            dropdowns.add(
+                                    new CustomDropdown(
+                                            Integer.parseInt(attr[1]),
+                                            attr[2],
+                                            Integer.parseInt(attr[3]),
+                                            attr[4],
+                                            opts
+                                    )
+                            );
+                            break;
+                    }
                 }
             }
 
             MainDashboard.setArrays(switches,sensors,sliders,dropdowns);
+            MainDashboard.setBlockCant(blockCant);
         }
     }
 

@@ -2,10 +2,18 @@ package com.example.AppIndustry.utils.components;
 
 public class CustomSensor {
     private int id;
-    private String units, thresholdlow, thresholdhigh, label;
+    private String blockName, units, thresholdlow, thresholdhigh, label;
 
-    public CustomSensor(int id, String units, String thresholdlow, String thresholdhigh, String label) {
+    public CustomSensor(
+            int id,
+            String blockID,
+            String units,
+            String thresholdlow,
+            String thresholdhigh,
+            String label
+    ) {
         this.id = id;
+        this.blockName = blockID;
         this.units = units;
         this.thresholdlow = thresholdlow;
         this.thresholdhigh = thresholdhigh;
@@ -26,39 +34,36 @@ public class CustomSensor {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
+    public void setBlockName(String _blockID) {
+        this.blockName = _blockID;
+    }
+    public String getBlockName() {
+        return blockName;
+    }
     public String getUnits() {
         return units;
     }
-
     public void setUnits(String units) {
         this.units = units;
     }
-
     public String getThresholdlow() {
         return thresholdlow;
     }
-
     public void setThresholdlow(String thresholdlow) {
         this.thresholdlow = thresholdlow;
     }
-
     public String getThresholdhigh() {
         return thresholdhigh;
     }
-
     public void setThresholdhigh(String thresholdhigh) {
         this.thresholdhigh = thresholdhigh;
     }
-
     public String getLabel() {
         return label;
     }
-
     public void setLabel(String label) {
         this.label = label;
     }
