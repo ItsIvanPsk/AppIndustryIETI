@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,6 +39,7 @@ public class MainDashboard extends AppCompatActivity {
     static ArrayList<Block> blocks = new ArrayList<>();
     static ArrayList<String> blockNameList = new ArrayList<>();
 
+    int[] padding = {15, 30, 15, 30};
 
     Button loginBtn;
     boolean running = false;
@@ -88,18 +90,25 @@ public class MainDashboard extends AppCompatActivity {
         LinearLayout components = new LinearLayout(this);
         components.setOrientation(LinearLayout.VERTICAL);
         scroll.addView(components);
+
         for (int block = 0; block < blocks.size(); block++) {
+
             LinearLayout blockLayout = new LinearLayout(this);
             TextView blockHeader = new TextView(this);
             blockHeader.setText(blocks.get(block).getBlockName());
             blockHeader.setTextAppearance(R.style.BlockHeader);
             blockLayout.setOrientation(LinearLayout.VERTICAL);
-            blockLayout.setPadding(5,20,5,20);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            layoutParams.setMargins(15, 50, 15, 50);
             blockLayout.addView(blockHeader);
+
             for (int sw = 0; sw < blocks.get(block).getBlock_switches().size(); sw++) {
                 System.out.println(blocks.get(block).getBlock_switches().get(sw).toString());
                 LinearLayout switchLayout = new LinearLayout(this);
                 switchLayout.setOrientation(LinearLayout.HORIZONTAL);
+                switchLayout.setPadding(10,30,10,30);
                 TextView tv = new TextView(this);
                 tv.setText(blocks.get(block).getBlock_switches().get(sw).getLabel());
                 tv.setTextAppearance(R.style.ControlHeader);
@@ -118,6 +127,7 @@ public class MainDashboard extends AppCompatActivity {
                 switchLayout.addView(_switch);
                 blockLayout.addView(switchLayout);
             }
+
             for (int ss = 0; ss < blocks.get(block).getBlock_sensors().size(); ss++) {
                 System.out.println(blocks.get(block).getBlock_sensors().get(ss).toString());
                 LinearLayout inner_linearLayout = new LinearLayout(this);
@@ -140,7 +150,87 @@ public class MainDashboard extends AppCompatActivity {
                 inner_linearLayout.addView(_sensor);
                 blockLayout.addView(inner_linearLayout);
             }
-            components.addView(blockLayout);
+
+            for (int sl = 0; sl < blocks.get(block).getBlock_sliders().size(); sl++) {
+                System.out.println(blocks.get(block).getBlock_sliders().get(sl).toString());
+                LinearLayout inner_linearLayout = new LinearLayout(this);
+                inner_linearLayout.setOrientation(LinearLayout.VERTICAL);
+                TextView tv = new TextView(this);
+                tv.setText(blocks.get(block).getBlock_sliders().get(sl).getLabel());
+                tv.setTextAppearance(R.style.ControlHeader);
+                SeekBar _slider = new SeekBar(this);
+                _slider.setLayoutParams(
+                        new LinearLayout.LayoutParams(
+                                600,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                );
+                _slider.setTag(R.id.componentId, blocks.get(block).getBlock_sliders().get(sl).getId());
+                _slider.setTag(R.id.blockID, blocks.get(block).getBlock_sliders().get(sl).getBlockName());
+                _slider.setMin(blocks.get(block).getBlock_sliders().get(sl).getMin());
+                _slider.setMax(blocks.get(block).getBlock_sliders().get(sl).getMax());
+                _slider.setProgress(blocks.get(block).getBlock_sliders().get(sl).getDef());
+                _slider.setPadding(0,10,0,10);
+
+                _slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {  }
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        seekBar.getTag(R.id.componentId);
+                        onComponentChanges(
+                                "SL",
+                                (Integer) seekBar.getTag(R.id.componentId),
+                                null,
+                                seekBar.getProgress()
+                        );
+                    }
+                });
+                inner_linearLayout.addView(tv);
+                inner_linearLayout.addView(_slider);
+                blockLayout.addView(inner_linearLayout);
+            }
+
+            for (int dd = 0; dd < blocks.get(block).getBlock_dropdowns().size(); dd++) {
+                System.out.println(blocks.get(block).getBlock_dropdowns().get(dd).toString());
+                LinearLayout inner_linearLayout = new LinearLayout(this);
+                inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                ArrayList<String> spinner_options = new ArrayList<>();
+                TextView tv = new TextView(this);
+                tv.setText(blocks.get(block).getBlock_dropdowns().get(dd).getText());
+                tv.setTextAppearance(R.style.ControlHeader);
+                Spinner _spinner = new Spinner(this);
+                _spinner.setEnabled(true);
+                _spinner.setPadding(0,10,0,10);
+                _spinner.setTag(R.id.componentId, blocks.get(block).getBlock_dropdowns().get(dd).getId());
+                _spinner.setTag("bug init");
+                for (int i = 0; i < blocks.get(block).getBlock_dropdowns().get(dd).getOptions().size() ; i++){
+                    spinner_options.add(blocks.get(block).getBlock_dropdowns().get(dd).getOptions().get(i).getLabel());
+                }
+                ArrayAdapter<String> spinnerArrayAdapter
+                        = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, spinner_options);
+                _spinner.setAdapter(spinnerArrayAdapter);
+                _spinner.setSelection(blocks.get(block).getBlock_dropdowns().get(dd).getDef() - 1);
+                _spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (adapterView.getTag().equals("bug init")) {
+                            adapterView.setTag("bug resolved");
+                        } else {
+                            onComponentChanges("DD", (Integer) adapterView.getTag(R.id.componentId), null, adapterView.getSelectedItemPosition());
+                        }
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) { }
+                });
+                inner_linearLayout.addView(tv);
+                inner_linearLayout.addView(_spinner);
+                blockLayout.addView(inner_linearLayout);
+            }
+
+            components.addView(blockLayout, layoutParams);
         }
     }
 
@@ -157,8 +247,8 @@ public class MainDashboard extends AppCompatActivity {
             for (int sl = 0; sl < sliders.size(); sl++) {
                 if(sliders.get(sl).getBlockName().equals(bName)){
                     blocks.get(block)
-                            .getBlock_switches()
-                            .add(switches.get(sl));
+                            .getBlock_sliders()
+                            .add(sliders.get(sl));
                 }
             }
             for (int ss = 0; ss < sensors.size(); ss++) {
@@ -190,6 +280,9 @@ public class MainDashboard extends AppCompatActivity {
     }
 
     public void getAllBlocks(){
+
+        blockNameList.clear();
+        blocks.clear();
 
         for (int sw = 0; sw < switches.size(); sw++) {
             if(!blockNameList.contains(switches.get(sw).getBlockName())){
@@ -264,74 +357,6 @@ public class MainDashboard extends AppCompatActivity {
         sensors = _sensors;
         sliders = _sliders;
         dropdowns = _dropdowns;
-    }
-
-    private void updateDropdowns(){
-        for (int dropdown = 0; dropdown < dropdowns.size(); dropdown++){
-            ArrayList<String> spinner_options = new ArrayList<>();
-            TextView tv = new TextView(this);
-            tv.setText(dropdowns.get(dropdown).getText());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tv.setTextAppearance(R.style.ControlHeader);
-            }
-            Spinner _spinner = new Spinner(this);
-            _spinner.setEnabled(true);
-            _spinner.setPadding(0,10,0,10);
-            _spinner.setTag(R.id.componentId, dropdowns.get(dropdown).getId());
-            _spinner.setTag("bug init");
-            for (int i = 0; i < dropdowns.get(dropdown).getOptions().size() ; i++){
-                spinner_options.add(dropdowns.get(dropdown).getOptions().get(i).getLabel());
-            }
-            ArrayAdapter<String> spinnerArrayAdapter
-                    = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, spinner_options);
-            _spinner.setAdapter(spinnerArrayAdapter);
-            _spinner.setSelection(dropdowns.get(dropdown).getDef() - 1);
-            _spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (adapterView.getTag().equals("bug init")) {
-                        adapterView.setTag("bug resolved");
-                    } else {
-                        onComponentChanges("DD", (Integer) adapterView.getTag(R.id.componentId), null, adapterView.getSelectedItemPosition());
-                    }
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) { }
-            });
-        }
-    }
-    private void updateSensors(){
-
-    }
-    public SeekBar createSeekBar(CustomSlider slider){
-        SeekBar _slider = new SeekBar(this);
-        _slider.setTag(R.id.componentId, slider.getId());
-        _slider.setTag(R.id.blockID, slider.getBlockName());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            _slider.setMin(slider.getMin());
-        }
-        _slider.setMax(slider.getMax());
-        _slider.setProgress(slider.getDef());
-        _slider.setPadding(0,10,0,10);
-
-        _slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {  }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekBar.getTag(R.id.componentId);
-                onComponentChanges(
-                        "SL",
-                        (Integer) seekBar.getTag(R.id.componentId),
-                        null,
-                        seekBar.getProgress()
-                );
-            }
-        });
-
-        return _slider;
     }
     public void onComponentChanges(
             String componentType,
