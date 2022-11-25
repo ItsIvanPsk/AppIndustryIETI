@@ -1,12 +1,12 @@
 package com.example.AppIndustry.utils.components;
 
 public class CustomSlider {
-    private int id, blockID, min, max, step, def;
-    private String label;
+    private int id, min, max, step, def;
+    private String blockName, label;
 
     public CustomSlider(
             int id,
-            int blockID,
+            String blockName,
             int def,
             int min,
             int max,
@@ -14,7 +14,7 @@ public class CustomSlider {
             String label
     ) {
         this.id = id;
-        this.blockID = blockID;
+        this.blockName = blockName;
         this.def = def;
         this.min = min;
         this.max = max;
@@ -25,12 +25,13 @@ public class CustomSlider {
     @Override
     public String toString() {
         return "CustomSlider{" +
-                "id=" + getId() +
-                ", min=" + getMin() +
-                ", max=" + getMax() +
-                ", def=" + getDef() +
-                ", step=" + getStep() +
-                ", label='" + getLabel() + '\'' +
+                "id=" + id +
+                ", min=" + min +
+                ", max=" + max +
+                ", step=" + step +
+                ", def=" + def +
+                ", blockName='" + blockName + '\'' +
+                ", label='" + label + '\'' +
                 '}';
     }
 
@@ -40,11 +41,11 @@ public class CustomSlider {
     public void setId(int id) {
         this.id = id;
     }
-    public void setBlockID(int _blockID) {
-        this.blockID = _blockID;
+    public void setBlockName(String _blockName) {
+        this.blockName = _blockName;
     }
-    public int getBlockID() {
-        return blockID;
+    public String getBlockName() {
+        return blockName;
     }
     public int getMin() {
         return min;

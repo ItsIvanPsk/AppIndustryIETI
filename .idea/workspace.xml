@@ -9,17 +9,18 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="533cd54f-e88a-4aff-ba95-941e9d5206bd" name="Changes" comment="Release v0.2 sprint review SP02">
+    <list default="true" id="533cd54f-e88a-4aff-ba95-941e9d5206bd" name="Changes" comment="WIP">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomDropdown.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomDropdown.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomOption.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSensor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSlider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSwitch.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/utils/components/CustomSwitch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/main_dashboard.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/main_dashboard.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,8 +48,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="valueResourceFile" />
+        <option value="Kotlin Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -281,8 +283,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Java Scratch.Scratch" />
         <item itemvalue="Android App.MainDashboard" />
+        <item itemvalue="Java Scratch.Scratch" />
       </list>
     </recent_temporary>
   </component>
@@ -344,7 +346,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669061567215</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="WIP">
+      <created>1669311141066</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1669311141066</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -373,6 +382,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="//WIP" />
     <MESSAGE value="Release v0.2 sprint review SP02" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release v0.2 sprint review SP02" />
+    <MESSAGE value="WIP" />
+    <option name="LAST_COMMIT_MESSAGE" value="WIP" />
   </component>
 </project>

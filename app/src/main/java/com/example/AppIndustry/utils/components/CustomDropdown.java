@@ -39,4 +39,16 @@ public class CustomDropdown {
         this.text = _text;
         this.options = _options;
     }
+
+
+    @Override
+    public String toString() {
+        return "CustomDropdown{" +
+                "id=" + id +
+                ", def=" + def +
+                ", text='" + text + '\'' +
+                ", blockName='" + blockName + '\'' +
+                ", options=" + options +
+                '}';
+    }
 }

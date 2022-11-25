@@ -1,17 +1,17 @@
 package com.example.AppIndustry.utils.components;
 
 public class CustomSwitch {
-    private int id, blockID;
-    private String def, label;
+    private int id;
+    private String blockName, def, label;
 
     public CustomSwitch(
             int id,
-            int blockID,
+            String blockName,
             String def,
             String label
     ) {
         this.id = id;
-        this.blockID = blockID;
+        this.blockName = blockName;
         if (def.equals("on")){
             this.def = "true";
         } else{
@@ -26,11 +26,11 @@ public class CustomSwitch {
     public void setId(int id) {
         this.id = id;
     }
-    public void setBlockID(int _blockID) {
-        this.blockID = _blockID;
+    public void setBlockName(String _blockName) {
+        this.blockName = _blockName;
     }
-    public int getBlockID() {
-        return blockID;
+    public String getBlockName() {
+        return blockName;
     }
     public String getDef() {
         return def;
@@ -49,6 +49,7 @@ public class CustomSwitch {
     public String toString() {
         return "CustomSwitch{" +
                 "id=" + id +
+                ", blockName='" + blockName + '\'' +
                 ", def='" + def + '\'' +
                 ", label='" + label + '\'' +
                 '}';

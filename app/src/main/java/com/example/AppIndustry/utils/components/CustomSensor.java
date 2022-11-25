@@ -6,14 +6,14 @@ public class CustomSensor {
 
     public CustomSensor(
             int id,
-            String blockID,
+            String blockName,
             String units,
             String thresholdlow,
             String thresholdhigh,
             String label
     ) {
         this.id = id;
-        this.blockName = blockID;
+        this.blockName = blockName;
         this.units = units;
         this.thresholdlow = thresholdlow;
         this.thresholdhigh = thresholdhigh;
@@ -24,6 +24,7 @@ public class CustomSensor {
     public String toString() {
         return "CustomSensor{" +
                 "id=" + id +
+                ", blockName='" + blockName + '\'' +
                 ", units='" + units + '\'' +
                 ", thresholdlow='" + thresholdlow + '\'' +
                 ", thresholdhigh='" + thresholdhigh + '\'' +
@@ -37,8 +38,8 @@ public class CustomSensor {
     public void setId(int id) {
         this.id = id;
     }
-    public void setBlockName(String _blockID) {
-        this.blockName = _blockID;
+    public void setBlockName(String _blockName) {
+        this.blockName = _blockName;
     }
     public String getBlockName() {
         return blockName;

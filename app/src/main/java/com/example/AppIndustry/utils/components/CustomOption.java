@@ -21,4 +21,12 @@ public class CustomOption {
     public void setLabel(String _label) {
         this.label = _label;
     }
+
+    @Override
+    public String toString() {
+        return "CustomOption{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                '}';
+    }
 }

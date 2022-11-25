@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.AppIndustry.R;
 import com.example.AppIndustry.data.WebSockets;
 import com.example.AppIndustry.utils.ServerProperties;
+import com.example.AppIndustry.utils.components.Block;
 import com.example.AppIndustry.utils.components.CustomDropdown;
 import com.example.AppIndustry.utils.components.CustomSensor;
 import com.example.AppIndustry.utils.components.CustomSlider;
@@ -34,6 +35,10 @@ public class MainDashboard extends AppCompatActivity {
     static ArrayList<CustomSensor> sensors;
     static ArrayList<CustomSlider> sliders;
     static ArrayList<CustomDropdown> dropdowns;
+    static ArrayList<Block> blocks = new ArrayList<>();
+    static ArrayList<String> blockNameList = new ArrayList<>();
+
+
     Button loginBtn;
     boolean running = false;
     static Integer blockCant;
@@ -70,6 +75,8 @@ public class MainDashboard extends AppCompatActivity {
             Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
         }catch (Exception e){ }
 
+        getAllBlocks();
+        sepComponents();
         updateUI();
         setupListeners();
     }
@@ -77,13 +84,144 @@ public class MainDashboard extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     private void updateUI() {
         ScrollView scroll = findViewById(R.id.dashboard_scroll);
+        LinearLayout components = new LinearLayout(this);
+        components.setOrientation(LinearLayout.VERTICAL);
+        scroll.addView(components);
+        for (int block = 0; block < blocks.size(); block++) {
+            LinearLayout blockLayout = new LinearLayout(this);
+            TextView blockHeader = new TextView(this);
+            blockHeader.setText(blocks.get(block).getBlockName());
+            blockHeader.setTextSize(18);
+            blockLayout.setBackgroundColor(Color.LTGRAY);
+            blockLayout.setOrientation(LinearLayout.VERTICAL);
+            blockLayout.addView(blockHeader);
+            for (int sw = 0; sw < blocks.get(block).getBlock_switches().size(); sw++) {
+                System.out.println(blocks.get(block).getBlock_switches().get(sw).toString());
+                LinearLayout inner_linearLayout = new LinearLayout(this);
+                inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                TextView tv = new TextView(this);
+                tv.setText(blocks.get(block).getBlock_switches().get(sw).getLabel());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    tv.setTextAppearance(R.style.ControlHeader);
+                }
+                Switch _switch = new Switch(this);
+                _switch.setChecked(Boolean.parseBoolean(blocks.get(block).getBlock_switches().get(sw).getDef()));
+                _switch.setPadding(0,10,0,10);
+                _switch.setTag(R.id.componentId, blocks.get(block).getBlock_switches().get(sw).getId());
+                _switch.setOnCheckedChangeListener(
+                        (compoundButton, state) -> onComponentChanges(
+                                "SW",
+                                (Integer) _switch.getTag(R.id.componentId),
+                                _switch.isChecked(),
+                                null)
+                );
+                inner_linearLayout.addView(tv);
+                inner_linearLayout.addView(_switch);
+                System.out.println("Switch created");
+                blockLayout.addView(inner_linearLayout);
+            }
+            components.addView(blockLayout);
+        }
+    }
 
-        for (int block = 0; block < blockCant; block++) {
-            LinearLayout componentLayout = new LinearLayout(this);
-            componentLayout.setBackgroundColor(Color.rgb(255,0,255));
-            scroll.addView(componentLayout);
+    public void sepComponents(){
+        for (int block = 0; block < blocks.size(); block++) {
+            String bName = blocks.get(block).getBlockName();
+            for (int sw = 0; sw < switches.size(); sw++) {
+                if(switches.get(sw).getBlockName().equals(bName)){
+                    blocks.get(block)
+                            .getBlock_switches()
+                            .add(switches.get(sw));
+                }
+            }
+            for (int sl = 0; sl < sliders.size(); sl++) {
+                if(sliders.get(sl).getBlockName().equals(bName)){
+                    blocks.get(block)
+                            .getBlock_switches()
+                            .add(switches.get(sl));
+                }
+            }
+            for (int ss = 0; ss < sensors.size(); ss++) {
+                if(sensors.get(ss).getBlockName().equals(bName)){
+                    blocks.get(block)
+                            .getBlock_sensors()
+                            .add(sensors.get(ss));
+                }
+            }
+            for (int dd = 0; dd < dropdowns.size(); dd++) {
+                if(dropdowns.get(dd).getBlockName().equals(bName)){
+                    blocks.get(block)
+                            .getBlock_dropdowns()
+                            .add(dropdowns.get(dd));
+                }
+            }
+        }
+    }
+
+    public void printBlock(){
+        for (int block = 0; block < blocks.size(); block++) {
+            System.out.println("Blocks");
+            System.out.println(blocks.get(block).getBlockName().toString());
+            System.out.println(blocks.get(block).getBlock_switches().toString());
+            System.out.println(blocks.get(block).getBlock_sliders().toString());
+            System.out.println(blocks.get(block).getBlock_sensors().toString());
+            System.out.println(blocks.get(block).getBlock_dropdowns().toString());
+        }
+    }
+
+    public void getAllBlocks(){
+
+        for (int sw = 0; sw < switches.size(); sw++) {
+            if(!blockNameList.contains(switches.get(sw).getBlockName())){
+                blockNameList.add(switches.get(sw).getBlockName());
+                blocks.add(new Block(
+                        switches.get(sw).getBlockName(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ));
+            }
         }
 
+        for (int sl = 0; sl < sliders.size(); sl++) {
+            if(!blockNameList.contains(sliders.get(sl).getBlockName())){
+                blockNameList.add(sliders.get(sl).getBlockName());
+                blocks.add(new Block(
+                        sliders.get(sl).getBlockName(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ));
+            }
+        }
+
+        for (int ss = 0; ss < sensors.size(); ss++) {
+            if(!blockNameList.contains(sensors.get(ss).getBlockName())){
+                blockNameList.add(sensors.get(ss).getBlockName());
+                blocks.add(new Block(
+                        sensors.get(ss).getBlockName(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ));
+            }
+        }
+
+        for (int dd = 0; dd < dropdowns.size(); dd++) {
+            if(!blockNameList.contains(dropdowns.get(dd).getBlockName())){
+                blockNameList.add(dropdowns.get(dd).getBlockName());
+                blocks.add(new Block(
+                        dropdowns.get(dd).getBlockName(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ));
+            }
+        }
     }
 
     private void setupListeners() {
@@ -108,30 +246,6 @@ public class MainDashboard extends AppCompatActivity {
         dropdowns = _dropdowns;
     }
 
-    private void updateSwitches(){
-        for (int switchIt = 0; switchIt < switches.size(); switchIt++){
-            LinearLayout inner_linearLayout = new LinearLayout(this);
-            inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            TextView tv = new TextView(this);
-            tv.setText(switches.get(switchIt).getLabel());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tv.setTextAppearance(R.style.ControlHeader);
-            }
-            Switch _switch = new Switch(this);
-            _switch.setChecked(Boolean.parseBoolean(switches.get(switchIt).getDef()));
-            _switch.setPadding(0,10,0,10);
-            _switch.setTag(R.id.componentId, switches.get(switchIt).getId());
-            _switch.setOnCheckedChangeListener(
-                    (compoundButton, state) -> onComponentChanges(
-                    "SW",
-                    (Integer) _switch.getTag(R.id.componentId),
-                    _switch.isChecked(),
-                    null)
-            );
-            inner_linearLayout.addView(tv);
-            inner_linearLayout.addView(_switch);
-        }
-    }
     private void updateDropdowns(){
         for (int dropdown = 0; dropdown < dropdowns.size(); dropdown++){
             ArrayList<String> spinner_options = new ArrayList<>();
@@ -187,7 +301,7 @@ public class MainDashboard extends AppCompatActivity {
     public SeekBar createSeekBar(CustomSlider slider){
         SeekBar _slider = new SeekBar(this);
         _slider.setTag(R.id.componentId, slider.getId());
-        _slider.setTag(R.id.blockID, slider.getBlockID());
+        _slider.setTag(R.id.blockID, slider.getBlockName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             _slider.setMin(slider.getMin());
         }
