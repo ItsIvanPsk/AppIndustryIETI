@@ -83,6 +83,7 @@ public class MainDashboard extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void updateUI() {
+        printBlock();
         ScrollView scroll = findViewById(R.id.dashboard_scroll);
         LinearLayout components = new LinearLayout(this);
         components.setOrientation(LinearLayout.VERTICAL);
@@ -91,19 +92,17 @@ public class MainDashboard extends AppCompatActivity {
             LinearLayout blockLayout = new LinearLayout(this);
             TextView blockHeader = new TextView(this);
             blockHeader.setText(blocks.get(block).getBlockName());
-            blockHeader.setTextSize(18);
-            blockLayout.setBackgroundColor(Color.LTGRAY);
+            blockHeader.setTextAppearance(R.style.BlockHeader);
             blockLayout.setOrientation(LinearLayout.VERTICAL);
+            blockLayout.setPadding(5,20,5,20);
             blockLayout.addView(blockHeader);
             for (int sw = 0; sw < blocks.get(block).getBlock_switches().size(); sw++) {
                 System.out.println(blocks.get(block).getBlock_switches().get(sw).toString());
-                LinearLayout inner_linearLayout = new LinearLayout(this);
-                inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout switchLayout = new LinearLayout(this);
+                switchLayout.setOrientation(LinearLayout.HORIZONTAL);
                 TextView tv = new TextView(this);
                 tv.setText(blocks.get(block).getBlock_switches().get(sw).getLabel());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    tv.setTextAppearance(R.style.ControlHeader);
-                }
+                tv.setTextAppearance(R.style.ControlHeader);
                 Switch _switch = new Switch(this);
                 _switch.setChecked(Boolean.parseBoolean(blocks.get(block).getBlock_switches().get(sw).getDef()));
                 _switch.setPadding(0,10,0,10);
@@ -115,9 +114,30 @@ public class MainDashboard extends AppCompatActivity {
                                 _switch.isChecked(),
                                 null)
                 );
+                switchLayout.addView(tv);
+                switchLayout.addView(_switch);
+                blockLayout.addView(switchLayout);
+            }
+            for (int ss = 0; ss < blocks.get(block).getBlock_sensors().size(); ss++) {
+                System.out.println(blocks.get(block).getBlock_sensors().get(ss).toString());
+                LinearLayout inner_linearLayout = new LinearLayout(this);
+                inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                TextView tv = new TextView(this);
+                tv.setText(blocks.get(block).getBlock_sensors().get(ss).getLabel());
+                tv.setTextAppearance(R.style.ControlHeader);
+                TextView _sensor = new TextView(this);
+                String sensorText =
+                        "Thresholdlow Temp: "
+                                + blocks.get(block).getBlock_sensors().get(ss).getThresholdlow()
+                                + blocks.get(block).getBlock_sensors().get(ss) + "\n"
+                                + "Thresholdhigh Temp: "
+                                + blocks.get(block).getBlock_sensors().get(ss).getThresholdhigh()
+                                + blocks.get(block).getBlock_sensors().get(ss).getUnits()
+                                + "\n" + "\n";
+                _sensor.setTag(R.id.componentId, blocks.get(block).getBlock_sensors().get(ss).getId());
+                _sensor.setText(sensorText);
                 inner_linearLayout.addView(tv);
-                inner_linearLayout.addView(_switch);
-                System.out.println("Switch created");
+                inner_linearLayout.addView(_sensor);
                 blockLayout.addView(inner_linearLayout);
             }
             components.addView(blockLayout);
@@ -281,22 +301,7 @@ public class MainDashboard extends AppCompatActivity {
         }
     }
     private void updateSensors(){
-        for (int sensor = 0; sensor < sensors.size(); sensor++){
-            TextView _sensor = new TextView(this);
-            TextView sensorHeader = new TextView(this);
-            sensorHeader.setText("Sensor " + (sensor + 1));
-            _sensor.setTag(R.id.componentId, sensors.get(sensor).getId());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                sensorHeader.setTextAppearance(R.style.ControlHeader);
-            }
-            String sensorText =
-                    "Thresholdlow Temp: "
-                    + sensors.get(sensor).getThresholdlow() + sensors.get(sensor).getUnits() + "\n"
-                    + "Thresholdhigh Temp: "
-                    + sensors.get(sensor).getThresholdhigh() + sensors.get(sensor).getUnits()
-                    + "\n" + "\n";
-            _sensor.setText(sensorText);
-        }
+
     }
     public SeekBar createSeekBar(CustomSlider slider){
         SeekBar _slider = new SeekBar(this);
