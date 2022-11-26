@@ -6,6 +6,8 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.AppIndustry.R;
 import com.example.AppIndustry.data.WebSockets;
+import com.example.AppIndustry.presentation.dialog.ServerDisconectedDialog;
 import com.example.AppIndustry.utils.ServerProperties;
 import com.example.AppIndustry.utils.components.Block;
 import com.example.AppIndustry.utils.components.CustomDropdown;
@@ -67,7 +70,7 @@ public class MainDashboard extends AppCompatActivity {
         dropdowns = new ArrayList<>();
 
         WebSockets.regAct(this);
-
+        WebSockets.updateDashActivity(this);
         loginBtn = findViewById(R.id.dashboard_login_button);
 
         try{
@@ -77,16 +80,30 @@ public class MainDashboard extends AppCompatActivity {
             Thread.sleep(ServerProperties.SERVER_QUERY_DELAY);
         }catch (Exception e){ }
 
-        getAllBlocks();
-        sepComponents();
-        updateUI();
+        generateUI();
+
         setupListeners();
     }
+
+    public void generateUI(){
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                getAllBlocks();
+                sepComponents();
+                updateUI();
+            }
+        });
+    }
+
 
     @SuppressLint("ResourceAsColor")
     private void updateUI() {
         printBlock();
         ScrollView scroll = findViewById(R.id.dashboard_scroll);
+        scroll.removeAllViews();
         LinearLayout components = new LinearLayout(this);
         components.setOrientation(LinearLayout.VERTICAL);
         scroll.addView(components);

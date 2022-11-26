@@ -9,9 +9,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="533cd54f-e88a-4aff-ba95-941e9d5206bd" name="Changes" comment="//WIP">
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+    <list default="true" id="533cd54f-e88a-4aff-ba95-941e9d5206bd" name="Changes" comment="Blocks works!">
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/data/WebSockets.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/AppIndustry/presentation/MainDashboard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -19,7 +20,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/ivan.figueredo.local/.android/avd/Mobile.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/ivan.figueredo.local/.android/avd/Mobile_2.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -359,7 +360,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669400770874</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Blocks works!">
+      <created>1669405138088</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1669405138088</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -389,6 +397,7 @@
     <MESSAGE value="Release v0.2 sprint review SP02" />
     <MESSAGE value="WIP" />
     <MESSAGE value="//WIP" />
-    <option name="LAST_COMMIT_MESSAGE" value="//WIP" />
+    <MESSAGE value="Blocks works!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Blocks works!" />
   </component>
 </project>

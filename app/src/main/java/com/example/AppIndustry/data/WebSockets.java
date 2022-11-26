@@ -33,9 +33,13 @@ public class WebSockets {
     static Activity currentAct;
 
     private static WeakReference<Activity> mainActivityRef;
-
     public static void updateMainActivity(Activity activity) {
         mainActivityRef = new WeakReference<>(activity);
+    }
+
+    private static WeakReference<Activity> dashActivityRef;
+    public static void updateDashActivity(Activity activity) {
+        dashActivityRef = new WeakReference<>(activity);
     }
 
     public static void regAct(Activity activity){
@@ -179,9 +183,10 @@ public class WebSockets {
                     }
                 }
             }
-
             MainDashboard.setArrays(switches,sensors,sliders,dropdowns);
             MainDashboard.setBlockCant(blockCant);
+            MainDashboard md = (MainDashboard) dashActivityRef.get();
+            md.generateUI();
         }
     }
 
