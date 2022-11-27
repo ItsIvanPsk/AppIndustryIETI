@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mainHeader">48dp</dimen>
+    <dimen name="blockTitle">32dp</dimen>
+    <dimen name="componentLabel">18dp</dimen>
+    <dimen name="blockPadding">10dp</dimen>
+</resources>

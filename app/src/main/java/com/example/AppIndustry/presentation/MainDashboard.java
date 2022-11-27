@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,7 +43,6 @@ public class MainDashboard extends AppCompatActivity {
     static ArrayList<Block> blocks = new ArrayList<>();
     static ArrayList<String> blockNameList = new ArrayList<>();
 
-    int[] padding = {15, 30, 15, 30};
 
     Button loginBtn;
     boolean running = false;
@@ -101,7 +101,6 @@ public class MainDashboard extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void updateUI() {
-        printBlock();
         ScrollView scroll = findViewById(R.id.dashboard_scroll);
         scroll.removeAllViews();
         LinearLayout components = new LinearLayout(this);
@@ -111,24 +110,42 @@ public class MainDashboard extends AppCompatActivity {
         for (int block = 0; block < blocks.size(); block++) {
 
             LinearLayout blockLayout = new LinearLayout(this);
-            TextView blockHeader = new TextView(this);
-            blockHeader.setText(blocks.get(block).getBlockName());
-            blockHeader.setTextAppearance(R.style.BlockHeader);
             blockLayout.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            blockLayout.setBackgroundResource(R.drawable.block_bg);
+            // blockLayout.setBackgroundColor(Color.rgb(106, 90, 205));
 
-            layoutParams.setMargins(15, 50, 15, 50);
+            LinearLayout.LayoutParams blockLayoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams. MATCH_PARENT ,
+                    LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+            blockLayoutParams.setMargins( 30 , 20 , 30 , 0 ) ;
+
+            LinearLayout blockHeader = new LinearLayout(this);
+            TextView blockTitle = new TextView(this);
+            blockTitle.setText(blocks.get(block).getBlockName());
+
+            LinearLayout.LayoutParams headertitle = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams. MATCH_PARENT ,
+                    LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+            headertitle.setMargins( 30 , 20 , 30 , 0 ) ;
+
+            blockTitle.setPadding(10,20,10,20);
+            blockTitle.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            blockTitle.setTextAppearance(R.style.BlockHeader);
+
+            blockHeader.addView(blockTitle, headertitle);
             blockLayout.addView(blockHeader);
 
             for (int sw = 0; sw < blocks.get(block).getBlock_switches().size(); sw++) {
-                System.out.println(blocks.get(block).getBlock_switches().get(sw).toString());
                 LinearLayout switchLayout = new LinearLayout(this);
                 switchLayout.setOrientation(LinearLayout.HORIZONTAL);
                 switchLayout.setPadding(10,30,10,30);
                 TextView tv = new TextView(this);
                 tv.setText(blocks.get(block).getBlock_switches().get(sw).getLabel());
                 tv.setTextAppearance(R.style.ControlHeader);
+                LinearLayout.LayoutParams switchParamstv = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. WRAP_CONTENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                switchParamstv.setMargins( 30 , 20 , 30 , 0 );
                 Switch _switch = new Switch(this);
                 _switch.setChecked(Boolean.parseBoolean(blocks.get(block).getBlock_switches().get(sw).getDef()));
                 _switch.setPadding(0,10,0,10);
@@ -140,48 +157,59 @@ public class MainDashboard extends AppCompatActivity {
                                 _switch.isChecked(),
                                 null)
                 );
-                switchLayout.addView(tv);
-                switchLayout.addView(_switch);
+                LinearLayout.LayoutParams switchParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. MATCH_PARENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                switchParams.setMargins( 30 , 20 , 30 , 0 );
+                switchLayout.addView(tv, switchParamstv);
+                switchLayout.addView(_switch, switchParams);
                 blockLayout.addView(switchLayout);
             }
 
             for (int ss = 0; ss < blocks.get(block).getBlock_sensors().size(); ss++) {
-                System.out.println(blocks.get(block).getBlock_sensors().get(ss).toString());
                 LinearLayout inner_linearLayout = new LinearLayout(this);
-                inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                inner_linearLayout.setOrientation(LinearLayout.VERTICAL);
                 TextView tv = new TextView(this);
                 tv.setText(blocks.get(block).getBlock_sensors().get(ss).getLabel());
                 tv.setTextAppearance(R.style.ControlHeader);
+                LinearLayout.LayoutParams paramstv = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. MATCH_PARENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                paramstv.setMargins( 30 , 20 , 30 , 0 );
                 TextView _sensor = new TextView(this);
+
                 String sensorText =
                         "Thresholdlow Temp: "
                                 + blocks.get(block).getBlock_sensors().get(ss).getThresholdlow()
-                                + blocks.get(block).getBlock_sensors().get(ss) + "\n"
+                                + blocks.get(block).getBlock_sensors().get(ss).getUnits() + "\n"
                                 + "Thresholdhigh Temp: "
                                 + blocks.get(block).getBlock_sensors().get(ss).getThresholdhigh()
                                 + blocks.get(block).getBlock_sensors().get(ss).getUnits()
                                 + "\n" + "\n";
                 _sensor.setTag(R.id.componentId, blocks.get(block).getBlock_sensors().get(ss).getId());
                 _sensor.setText(sensorText);
-                inner_linearLayout.addView(tv);
-                inner_linearLayout.addView(_sensor);
+
+                LinearLayout.LayoutParams sensorParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. WRAP_CONTENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                sensorParams.setMargins( 30 , 20 , 30 , 0 );
+
+                inner_linearLayout.addView(tv, paramstv);
+                inner_linearLayout.addView(_sensor, sensorParams);
                 blockLayout.addView(inner_linearLayout);
             }
 
             for (int sl = 0; sl < blocks.get(block).getBlock_sliders().size(); sl++) {
-                System.out.println(blocks.get(block).getBlock_sliders().get(sl).toString());
                 LinearLayout inner_linearLayout = new LinearLayout(this);
                 inner_linearLayout.setOrientation(LinearLayout.VERTICAL);
                 TextView tv = new TextView(this);
                 tv.setText(blocks.get(block).getBlock_sliders().get(sl).getLabel());
                 tv.setTextAppearance(R.style.ControlHeader);
+                LinearLayout.LayoutParams paramstv = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. MATCH_PARENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                paramstv.setMargins( 30 , 20 , 30 , 0 );
                 SeekBar _slider = new SeekBar(this);
-                _slider.setLayoutParams(
-                        new LinearLayout.LayoutParams(
-                                600,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                        )
-                );
                 _slider.setTag(R.id.componentId, blocks.get(block).getBlock_sliders().get(sl).getId());
                 _slider.setTag(R.id.blockID, blocks.get(block).getBlock_sliders().get(sl).getBlockName());
                 _slider.setMin(blocks.get(block).getBlock_sliders().get(sl).getMin());
@@ -205,19 +233,31 @@ public class MainDashboard extends AppCompatActivity {
                         );
                     }
                 });
-                inner_linearLayout.addView(tv);
-                inner_linearLayout.addView(_slider);
+
+                LinearLayout.LayoutParams paramsSlider = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. WRAP_CONTENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                paramsSlider.setMargins( 30 , 20 , 30 , 0 );
+                paramsSlider.width = 800;
+
+                inner_linearLayout.addView(tv, paramstv);
+                inner_linearLayout.addView(_slider, paramsSlider);
                 blockLayout.addView(inner_linearLayout);
             }
 
             for (int dd = 0; dd < blocks.get(block).getBlock_dropdowns().size(); dd++) {
-                System.out.println(blocks.get(block).getBlock_dropdowns().get(dd).toString());
                 LinearLayout inner_linearLayout = new LinearLayout(this);
                 inner_linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 ArrayList<String> spinner_options = new ArrayList<>();
+
                 TextView tv = new TextView(this);
                 tv.setText(blocks.get(block).getBlock_dropdowns().get(dd).getText());
                 tv.setTextAppearance(R.style.ControlHeader);
+                LinearLayout.LayoutParams paramstv = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. WRAP_CONTENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                paramstv.setMargins( 30 , 20 , 30 , 0 );
+
                 Spinner _spinner = new Spinner(this);
                 _spinner.setEnabled(true);
                 _spinner.setPadding(0,10,0,10);
@@ -242,12 +282,18 @@ public class MainDashboard extends AppCompatActivity {
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) { }
                 });
-                inner_linearLayout.addView(tv);
-                inner_linearLayout.addView(_spinner);
+
+                LinearLayout.LayoutParams spinnerParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams. WRAP_CONTENT ,
+                        LinearLayout.LayoutParams. WRAP_CONTENT ) ;
+                spinnerParams.setMargins( 30 , 20 , 30 , 0 );
+
+                inner_linearLayout.addView(tv, paramstv);
+                inner_linearLayout.addView(_spinner, spinnerParams);
                 blockLayout.addView(inner_linearLayout);
             }
 
-            components.addView(blockLayout, layoutParams);
+            components.addView(blockLayout, blockLayoutParams);
         }
     }
 

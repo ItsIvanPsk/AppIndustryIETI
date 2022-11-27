@@ -93,7 +93,7 @@ public class WebSockets {
     }
 
     private void configParser(String message) {
-        if(message.equals("CF%%")){
+        if(message.equals("CF··")){
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> NoXMLoadedDialog.noXMLoaded(currentAct).show());
         } else {
@@ -103,15 +103,13 @@ public class WebSockets {
             ArrayList<CustomDropdown> dropdowns = new ArrayList<>();
             ArrayList<CustomOption> opts;
 
-            String[] components = message.split("%%");
-            System.out.println(message);
-            System.out.println(components.length);
+            String[] components = message.split("··");
             Integer blockCant = Integer.parseInt(components[1]);
 
             for (int component = 0; component < components.length; component++) {
                 if(component != 0 && component != 1){
                     String componentID = components[component].substring(0, 2).toString();
-                    String[] attr = components[component].split("#");
+                    String[] attr = components[component].split("_");
 
                     switch (componentID) {
                         case "SW":
@@ -161,7 +159,7 @@ public class WebSockets {
                             }
 
                             for (int sepOpc = 0; sepOpc < sepComas.length; sepOpc++) {
-                                String[] options = sepComas[sepOpc].split("//");
+                                String[] options = sepComas[sepOpc].split("\\$");
                                 opts.add(
                                         new CustomOption(
                                                 Integer.parseInt(options[0]),

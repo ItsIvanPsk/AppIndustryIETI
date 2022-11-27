@@ -27,12 +27,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        WebSockets.updateMainActivity(this);
 
         button = findViewById(R.id.main_btn_login);
         serverInput = findViewById(R.id.main_input_server);
         usernameInput = findViewById(R.id.main_input_username);
         passwordInput = findViewById(R.id.main_input_password);
+
+        WebSockets.updateMainActivity(this);
 
         setButtonListeners();
     }
