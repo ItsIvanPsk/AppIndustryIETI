@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(serverInput.getText().toString());
                     ConnectionUseCase.ws.connecta();
                     System.out.println("Connected");
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                     ConnectionUseCase.ws.envia(
                             "UV#" + usernameInput.getText().toString() + "#" + passwordInput.getText().toString()
                     );

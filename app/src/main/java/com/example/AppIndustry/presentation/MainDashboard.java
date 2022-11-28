@@ -112,7 +112,6 @@ public class MainDashboard extends AppCompatActivity {
             LinearLayout blockLayout = new LinearLayout(this);
             blockLayout.setOrientation(LinearLayout.VERTICAL);
             blockLayout.setBackgroundResource(R.drawable.block_bg);
-            // blockLayout.setBackgroundColor(Color.rgb(106, 90, 205));
 
             LinearLayout.LayoutParams blockLayoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams. MATCH_PARENT ,

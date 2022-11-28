@@ -6,6 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Text">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Header">
         <item name="android:textStyle">bold</item>
     </style>
