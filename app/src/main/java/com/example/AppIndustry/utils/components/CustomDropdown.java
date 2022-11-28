@@ -28,13 +28,13 @@ public class CustomDropdown {
 
     public CustomDropdown(
             int _id,
-            String _blockID,
+            String _blockName,
             int _def,
             String _text,
             ArrayList<CustomOption> _options
     ){
         this.id = _id;
-        this.blockName = _blockID;
+        this.blockName = _blockName;
         this.def = _def;
         this.text = _text;
         this.options = _options;
